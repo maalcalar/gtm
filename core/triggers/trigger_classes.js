@@ -27,19 +27,25 @@ export default class Trigger {
     run() {
         // tag<objeto> instanceof tag<clase>
         // tag['run']();
-        alert('Corriendo trigger');
+        alert('Corriendo trigger  ||  Tipo de trigger = ' + this._type);
         if (this._type == 'page view') {
             if (document.readyState === 'loading' || document.querySelector('body')) {
                 alert('disparado en Page View');
             }
         } else if (this._type == 'dom ready') {
-            if (document.readyState === 'interactive' || document.readyState === 'complete') {
-                alert('disparado en DOM Ready');
-            }
+            let domReadyInt = setInterval(() => {
+                if (document.readyState === 'interactive' || document.readyState === 'complete') {
+                    clearInterval(domReadyInt);
+                    alert('disparado en DOM Ready');
+                }
+            }, 100);
         } else if (this._type == 'window loaded') {
-            if (document.readyState === 'complete') {
-                alert('disparado en Window Loaded');
-            }
+            let winLoadedInt = setInterval(() => {
+                if (document.readyState === 'complete') {
+                    clearInterval(winLoadedInt);
+                    alert('disparado en Window Loaded');
+                }
+            }, 100);
         }
 
         this._shooted = 1;
