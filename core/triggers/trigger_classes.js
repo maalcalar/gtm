@@ -7,11 +7,11 @@ export default class Trigger {
     }
 
     // Setters
-    set type() {
+    set type(x) {
         return false;
     }
 
-    set shooted() {
+    set shooted(x) {
         return false;
     }
 
