@@ -1,7 +1,20 @@
+import Tag from "../tags/tag_classes";
+
 export default class Trigger {
     constructor(type = 'page view', tag = undefined) {
         this._type = typeof type === 'string' ? type.toLowerCase() : 'page view';
         this._shooted = 0;
+        this._tag = tag;
+        this._tagOK = false;
+
+        if (this._tag != undefined) {
+            if (!(this._tag instanceof Tag))
+                console.log('Warning: Your tag is not well-formed.');
+            else
+                this._tagOK = true;
+        } else {
+            console.warn('Warning: You did not passed a tag.');
+        }
 
         this.run();
     }
@@ -24,26 +37,35 @@ export default class Trigger {
         return this._shooted;
     }
 
+    // Shot
     run() {
         // tag<objeto> instanceof tag<clase>
         // tag['run']();
-        alert('Corriendo trigger  ||  Tipo de trigger = ' + this._type);
         if (this._type == 'page view') {
             if (document.readyState === 'loading' || document.querySelector('body')) {
-                alert('disparado en Page View');
+                if (this._tagOK) 
+                    this._tag.run();
+                else
+                    console.warn('Warning: There is an issue with your tag.');
             }
         } else if (this._type == 'dom ready') {
             let domReadyInt = setInterval(() => {
                 if (document.readyState === 'interactive' || document.readyState === 'complete') {
                     clearInterval(domReadyInt);
-                    alert('disparado en DOM Ready');
+                    if (this._tagOK)
+                        this._tag.run();
+                    else
+                        console.warn('Warning: There is an issue with your tag.');
                 }
             }, 100);
         } else if (this._type == 'window loaded') {
             let winLoadedInt = setInterval(() => {
                 if (document.readyState === 'complete') {
                     clearInterval(winLoadedInt);
-                    alert('disparado en Window Loaded');
+                    if (this._tagOK)
+                        this._tag.run();
+                    else
+                        console.warn('Warning: There is an issue with your tag.');
                 }
             }, 100);
         }
