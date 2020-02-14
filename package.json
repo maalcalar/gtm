@@ -1,0 +1,15 @@
+{
+  "name": "gtm",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "test"
+  },
+  "author": "Miguel Alcala",
+  "license": "ISC",
+  "dependencies": {
+    "webpack": "^4.41.6",
+    "webpack-cli": "^3.3.11"
+  }
+}
