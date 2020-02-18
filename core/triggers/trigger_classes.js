@@ -39,12 +39,19 @@ export default class Trigger {
 
     // Shot
     run() {
-        // tag<objeto> instanceof tag<clase>
-        // tag['run']();
         if (this._type == 'page view') {
             if (document.readyState === 'loading' || document.querySelector('body')) {
-                if (this._tagOK) 
-                    this._tag.run();
+                if (this._tagOK)
+                    if(this._tag.type === 'custom html') {
+                        let readyBody = setInterval(() => {
+                            if(document.body) {
+                                clearInterval(readyBody);
+                                this._tag.run();
+                            }
+                        }, 10);
+                    }
+                    else
+                        this._tag.run();
                 else
                     console.warn('Warning: There is an issue with your tag.');
             }
