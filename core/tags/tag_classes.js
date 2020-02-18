@@ -44,26 +44,20 @@ export default class Tag {
 
     // Work
     run() {
-        alert(1);
-        alert(document.readyState);
         const body = document.getElementsByTagName('body')[0];
 
-        console.log(1);
         if(this._type === 'custom html') {
-            console.log(2);
             const typeHTML = typeof this._html;
 
             if (typeHTML === 'string') {
-                console.log(3);
-                const parser = new DOMParser();
-                console.log(4);
-                const domElement = parser.parseFromString(this._html, 'text/html');
+                // const parser = new DOMParser();
+                // const domElement = parser.parseFromString(this._html, 'text/html');
 
-                if(domElement) {
-                    console.log(5);
-                    body.appendChild(domElement);
+                // if(domElement) {
+                if(this._html) {
+                    // body.appendChild(domElement);
+                    body.innerHTML = body.innerHTML + this._html;
                 } else {
-                    console.log(6);
                     console.warn('Warning: Something went wrong with html property passed.');
                 }
             }
