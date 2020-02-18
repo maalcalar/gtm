@@ -2,6 +2,7 @@ import Tag from "../../core/tags/tag_classes";
 
 const tag = new Tag('custom html');
 
-tag.html = '<script>{ alert("This a Custom HTML tag."); }</script>';
+tag.html = '<style>body { background-color: #AF0; }</style>';
+tag.html += '<script>if(document.body) { alert("This a Custom HTML tag."); }</script>';
 
 export default tag;
