@@ -16,7 +16,7 @@ export default class Trigger {
             console.warn('Warning: You did not passed a tag.');
         }
 
-        this.run();
+        // this.run();
     }
 
     // Setters
@@ -28,6 +28,19 @@ export default class Trigger {
         return false;
     }
 
+    set tag(x) {
+        this._tag = x;
+
+        if (this._tag != undefined) {
+            if (!(this._tag instanceof Tag))
+                console.log('Warning: Your tag is not well-formed.');
+            else
+                this._tagOK = true;
+        } else {
+            console.warn('Warning: You did not passed a tag.');
+        }
+    }
+
     // Getters
     get type() {
         return this._type;
@@ -37,46 +50,54 @@ export default class Trigger {
         return this._shooted;
     }
 
+    get tag() {
+        return this._tag;
+    }
+
     // Shot
     run() {
-        if (this._type == 'page view') {
-            if (document.readyState === 'loading' || document.querySelector('body')) {
-                if (this._tagOK)
-                    if(this._tag.type === 'custom html') {
-                        let readyBody = setInterval(() => {
-                            if(document.body) {
-                                clearInterval(readyBody);
-                                this._tag.run();
-                            }
-                        }, 10);
+        try {
+            if (this._type == 'page view') {
+                if (document.readyState === 'loading' || document.querySelector('body')) {
+                    if (this._tagOK)
+                        if (this._tag.type === 'custom html') {
+                            let readyBody = setInterval(() => {
+                                if (document.body) {
+                                    clearInterval(readyBody);
+                                    this._tag.run();
+                                }
+                            }, 10);
+                        }
+                        else
+                            this._tag.run();
+                    else
+                        console.warn('Warning: There is an issue with your tag.');
+                }
+            } else if (this._type == 'dom ready') {
+                let domReadyInt = setInterval(() => {
+                    if (document.readyState === 'interactive' || document.readyState === 'complete') {
+                        clearInterval(domReadyInt);
+                        if (this._tagOK)
+                            this._tag.run();
+                        else
+                            console.warn('Warning: There is an issue with your tag.');
                     }
-                    else
-                        this._tag.run();
-                else
-                    console.warn('Warning: There is an issue with your tag.');
+                }, 100);
+            } else if (this._type == 'window loaded') {
+                let winLoadedInt = setInterval(() => {
+                    if (document.readyState === 'complete') {
+                        clearInterval(winLoadedInt);
+                        if (this._tagOK)
+                            this._tag.run();
+                        else
+                            console.warn('Warning: There is an issue with your tag.');
+                    }
+                }, 100);
             }
-        } else if (this._type == 'dom ready') {
-            let domReadyInt = setInterval(() => {
-                if (document.readyState === 'interactive' || document.readyState === 'complete') {
-                    clearInterval(domReadyInt);
-                    if (this._tagOK)
-                        this._tag.run();
-                    else
-                        console.warn('Warning: There is an issue with your tag.');
-                }
-            }, 100);
-        } else if (this._type == 'window loaded') {
-            let winLoadedInt = setInterval(() => {
-                if (document.readyState === 'complete') {
-                    clearInterval(winLoadedInt);
-                    if (this._tagOK)
-                        this._tag.run();
-                    else
-                        console.warn('Warning: There is an issue with your tag.');
-                }
-            }, 100);
+        } catch (error) {
+            console.error(error.message);
+        } finally {
+            this._shooted = 1;
         }
-
-        this._shooted = 1;
     }
 }
