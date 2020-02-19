@@ -1,5 +1,14 @@
+# Paquetes, librerías y configuraciones
 node_modules
-
 package-lock.json
 
+# Resultado del bundler
 app/*.js
+
+# Archivos temporales
+~*.xls
+~*.xlsx
+~*.doc
+~*.docx
+~*.ppt
+~*.pptx
