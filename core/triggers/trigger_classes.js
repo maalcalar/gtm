@@ -6,6 +6,7 @@ export default class Trigger {
         this._shooted = 0;
         this._tag = tag;
         this._tagOK = false;
+        this._event = '';
 
         if (this._tag != undefined) {
             if (!(this._tag instanceof Tag))
@@ -41,6 +42,17 @@ export default class Trigger {
         }
     }
 
+    set event(x) {
+        if(this._event === '') {
+            this._event = x;
+        } else {
+            console.warn('Warning: Event name was already setted.');
+            return false;
+        }
+
+        return true;
+    }
+
     // Getters
     get type() {
         return this._type;
@@ -52,6 +64,10 @@ export default class Trigger {
 
     get tag() {
         return this._tag;
+    }
+
+    get event() {
+        return this._event;
     }
 
     // Shot
@@ -82,7 +98,7 @@ export default class Trigger {
                         else
                             console.warn('Warning: There is an issue with your tag.');
                     }
-                }, 100);
+                }, 50);
             } else if (this._type == 'window loaded') {
                 let winLoadedInt = setInterval(() => {
                     if (document.readyState === 'complete') {
@@ -92,7 +108,31 @@ export default class Trigger {
                         else
                             console.warn('Warning: There is an issue with your tag.');
                     }
-                }, 100);
+                }, 50);
+            } else if (this._type == 'custom event') {
+                if (!window.dataLayer) {
+                    window.dataLayer = [];
+                    console.warn('Warning: There is no "window.dataLayer", check that GTM is properly installed.');
+                }
+
+                window.dataLayer = new Proxy(window.dataLayer, {
+                    apply: function (target, thisArg, argumentsList) {
+                        return thisArg[target].apply(this, argumentList);
+                    },
+                    deleteProperty: function (target, property) {
+                        // console.log("Deleted %s", property);
+                        return true;
+                    },
+                    set: function (target, property, value, receiver) {
+                        if (value.event)
+                            if (this._event == value.event) 
+                                this._tag.run();
+
+                        target[property] = value;
+                        // console.log("Set %s to %o", property, value);
+                        return true;
+                    }
+                });
             }
         } catch (error) {
             console.error(error.message);
