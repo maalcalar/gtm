@@ -72,49 +72,55 @@ export default class Trigger {
 
     // Shot
     run() {
+        const self = this;
+
+        let _linea = 0; console.log(_linea);
         try {
-            if (this._type == 'page view') {
+            if (self._type == 'page view') {
                 if (document.readyState === 'loading' || document.querySelector('body')) {
-                    if (this._tagOK)
-                        if (this._tag.type === 'custom html') {
+                    if (self._tagOK)
+                        if (self._tag.type === 'custom html') {
                             let readyBody = setInterval(() => {
                                 if (document.body) {
                                     clearInterval(readyBody);
-                                    this._tag.run();
+                                    self._tag.run();
                                 }
                             }, 10);
                         }
                         else
-                            this._tag.run();
+                            self._tag.run();
                     else
                         console.warn('Warning: There is an issue with your tag.');
                 }
-            } else if (this._type == 'dom ready') {
+            } else if (self._type == 'dom ready') {
                 let domReadyInt = setInterval(() => {
                     if (document.readyState === 'interactive' || document.readyState === 'complete') {
                         clearInterval(domReadyInt);
-                        if (this._tagOK)
-                            this._tag.run();
+                        if (self._tagOK)
+                            self._tag.run();
                         else
                             console.warn('Warning: There is an issue with your tag.');
                     }
                 }, 50);
-            } else if (this._type == 'window loaded') {
+            } else if (self._type == 'window loaded') {
                 let winLoadedInt = setInterval(() => {
                     if (document.readyState === 'complete') {
                         clearInterval(winLoadedInt);
-                        if (this._tagOK)
-                            this._tag.run();
+                        if (self._tagOK)
+                            self._tag.run();
                         else
                             console.warn('Warning: There is an issue with your tag.');
                     }
                 }, 50);
-            } else if (this._type == 'custom event') {
+            } else if (self._type == 'custom event') {
+                _linea = 1; console.log(_linea);
                 if (!window.dataLayer) {
+                    _linea = 1.1; console.log(_linea);
                     window.dataLayer = [];
                     console.warn('Warning: There is no "window.dataLayer", check that GTM is properly installed.');
                 }
 
+                _linea = 2; console.log(_linea);
                 window.dataLayer = new Proxy(window.dataLayer, {
                     apply: function (target, thisArg, argumentsList) {
                         return thisArg[target].apply(this, argumentList);
@@ -124,9 +130,10 @@ export default class Trigger {
                         return true;
                     },
                     set: function (target, property, value, receiver) {
-                        if (value.event)
-                            if (this._event == value.event) 
-                                this._tag.run();
+                        if (self._tagOK)
+                            if (value.event)
+                                if (self._event == value.event) 
+                                    self._tag.run();
 
                         target[property] = value;
                         // console.log("Set %s to %o", property, value);
@@ -135,7 +142,7 @@ export default class Trigger {
                 });
             }
         } catch (error) {
-            console.error(error.message);
+            console.error(`Línea: ${_linea} | Mensaje: ${error.message}`);
         } finally {
             this._shooted = 1;
         }
