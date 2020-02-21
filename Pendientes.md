@@ -1,14 +1,18 @@
-Estructura
+## Estructura
+---
 - Carpetas en las que sólo habrán Triggers, Tags y Variables. Esto permitiría evitar redundancia de código para su reutilización. 👍
 - Las demás carpetas de proyectos recolectan/importan Triggers, Tags y/o Variables. 👍
 
-Documentación
+## Documentación
+---
 - Establecer un documento para que los desarrolladores puedan ingresar/documentar sus tareas y/o aportes 😪
 
-Bundler - Webpack
+## Bundler - Webpack
+---
 - Automatizar la entrada de scripts 👍
 
-Proyectos
+### Proyectos
+---
 - Nueva clase
 - Incluir Triggers, Tags Y Variables
 - Los proyectos pueden establecer múltiples Triggers con condicionales
@@ -16,14 +20,17 @@ Proyectos
 - Orden de Triggers
 - Orden de Tags
 
-Trigger
+## Trigger
+---
 - Agregar "Try catch" para evitar caída 😪
 - Tipo "Custom Event"
 
-Tag
+## Tag
+---
 - Custom HTML 👍
 - Regular Expression para detectar mala escritura en tipo Custom HTML. (Ejemplo: /(<script>)\w+\W+\d+\D+(<\\script>)/gm)
 - Posibilidad para importar archivos HTML
 
-Variables
+## Variables
+---
 - Nueva clase
