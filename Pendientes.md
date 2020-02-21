@@ -2,6 +2,7 @@
 ---
 - Carpetas en las que sólo habrán Triggers, Tags y Variables. Esto permitiría evitar redundancia de código para su reutilización. 👍
 - Las demás carpetas de proyectos recolectan/importan Triggers, Tags y/o Variables. 👍
+- Los Proyectos deben permitir iteraciones infinitas de parte de los Triggers.
 
 ## Documentación
 ---
@@ -13,8 +14,8 @@
 
 ### Proyectos
 ---
-- Nueva clase
-- Incluir Triggers, Tags Y Variables
+- Nueva clase 👍
+- Incluir Triggers, Tags 😪
 - Los proyectos pueden establecer múltiples Triggers con condicionales
 - Incluir Excepciones en Triggers
 - Orden de Triggers
@@ -23,7 +24,7 @@
 ## Trigger
 ---
 - Agregar "Try catch" para evitar caída 😪
-- Tipo "Custom Event"
+- Tipo "Custom Event" 😪
 
 ## Tag
 ---

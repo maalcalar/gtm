@@ -53,6 +53,11 @@ export default class Project {
         } else {
             console.warn('Warning: You did not passed a tag.');
         }
+
+        if (this._triggersOK && this._tagsOK)
+            this._stateOK = true;
+        else
+            console.error('Error: The project is not able. There is an error on setting Triggers or Tags.');
     }
 
     // Setters
@@ -66,4 +71,29 @@ export default class Project {
     }
 
     // Work
+    run () {
+        if (this._stateOK) {
+            try {
+                let result = false;
+                let results = [];
+
+                for (let indexOR = 0; indexOR < this._triggers.length; indexOR++) {
+                    for (let indexAND = 0; indexAND < this._triggers[indexOR].length; indexAND++) {
+                        if (indexAND === 0)
+                            results[indexOR] = this._triggers[indexOR][indexAND].run();
+                        else
+                            results[indexOR] = results[indexOR] && this._triggers[indexOR][indexAND].run();
+                    }
+                }
+
+                for (let index = 0; index < results.length; index++) {
+                    result = result || results[index];
+                }
+            } catch (error) {
+
+            } finally {
+
+            }
+        }
+    }
 }
