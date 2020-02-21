@@ -36,3 +36,16 @@
 ## Variables
 ---
 - Nueva clase
+
+---
+## Fuentes
+https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Iterators_and_Generators
+https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function*
+https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/yield
+https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/yield*
+https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Building_blocks/Events
+https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Using_promises
+https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise
+https://developer.mozilla.org/en-US/docs/Web/API/Streams_API
+https://developer.mozilla.org/en-US/docs/Web/API/Streams_API/Using_readable_streams
+https://github.com/mdn/dom-examples/blob/master/streams/simple-random-stream/index.html
