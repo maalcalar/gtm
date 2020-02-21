@@ -14,7 +14,7 @@ export default class Trigger {
             else
                 this._tagOK = true;
         } else {
-            console.warn('Warning: You did not passed a tag.');
+            console.warn('Warning: You did not pass a tag.');
         }
 
         // this.run();
@@ -38,7 +38,7 @@ export default class Trigger {
             else
                 this._tagOK = true;
         } else {
-            console.warn('Warning: You did not passed a tag.');
+            console.warn('Warning: You did not pass a tag.');
         }
     }
 
