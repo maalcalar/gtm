@@ -71,10 +71,10 @@ export default class Trigger {
     }
 
     // Shot
-    run() {
+    *run() {
         const self = this;
 
-        let _linea = 0; console.log(_linea);
+        let _linea = 0;
         try {
             if (self._type == 'page view') {
                 if (document.readyState === 'loading' || document.querySelector('body')) {
@@ -83,12 +83,14 @@ export default class Trigger {
                             let readyBody = setInterval(() => {
                                 if (document.body) {
                                     clearInterval(readyBody);
-                                    self._tag.run();
+                                    yield true;
+                                    // self._tag.run();
                                 }
                             }, 10);
                         }
                         else
-                            self._tag.run();
+                            yield true;
+                            //self._tag.run();
                     else
                         console.warn('Warning: There is an issue with your tag.');
                 }
@@ -97,7 +99,8 @@ export default class Trigger {
                     if (document.readyState === 'interactive' || document.readyState === 'complete') {
                         clearInterval(domReadyInt);
                         if (self._tagOK)
-                            self._tag.run();
+                            yield true;
+                            // self._tag.run();
                         else
                             console.warn('Warning: There is an issue with your tag.');
                     }
@@ -107,20 +110,21 @@ export default class Trigger {
                     if (document.readyState === 'complete') {
                         clearInterval(winLoadedInt);
                         if (self._tagOK)
-                            self._tag.run();
+                            yield true;
+                            // self._tag.run();
                         else
                             console.warn('Warning: There is an issue with your tag.');
                     }
                 }, 50);
             } else if (self._type == 'custom event') {
-                _linea = 1; console.log(_linea);
+                _linea = 1;
                 if (!window.dataLayer) {
-                    _linea = 1.1; console.log(_linea);
+                    _linea = 1.1;
                     window.dataLayer = [];
                     console.warn('Warning: There is no "window.dataLayer", check that GTM is properly installed.');
                 }
 
-                _linea = 2; console.log(_linea);
+                _linea = 2;
                 window.dataLayer = new Proxy(window.dataLayer, {
                     apply: function (target, thisArg, argumentsList) {
                         return thisArg[target].apply(this, argumentList);
@@ -132,8 +136,9 @@ export default class Trigger {
                     set: function (target, property, value, receiver) {
                         if (self._tagOK)
                             if (value.event)
-                                if (self._event == value.event) 
-                                    self._tag.run();
+                                if (self._event == value.event)
+                                    yield true;
+                                    // self._tag.run();
 
                         target[property] = value;
                         // console.log("Set %s to %o", property, value);
