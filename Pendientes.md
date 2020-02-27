@@ -6,36 +6,38 @@
 
 ## Documentación
 ---
-- Establecer un documento para que los desarrolladores puedan ingresar/documentar sus tareas y/o aportes 😪
+- Establecer un documento para que los desarrolladores puedan ingresar/documentar sus tareas y/o aportes. 😪
 
 ## Bundler - Webpack
 ---
-- Automatizar la entrada de scripts 👍
+- Automatizar la entrada de scripts. 👍
 
 ### Proyectos
 ---
-- Nueva clase 👍
-- Incluir Triggers, Tags 😪
-- Los proyectos pueden establecer múltiples Triggers con condicionales
-- Incluir Excepciones en Triggers
-- Orden de Triggers
-- Orden de Tags
+- Nueva clase. 👍
+- Incluir Triggers, Tags. 😪
+- Los proyectos pueden establecer múltiples Triggers con condicionales.
+- Crear Stream para los Triggers.
+- Incluir Excepciones en Triggers.
+- Orden de Triggers.
+- Orden de Tags.
 
 ## Trigger
 ---
-- Agregar "Try catch" para evitar caída 😪
-- Tipo "Custom Event" 😪
+- Agregar "Try catch" para evitar caída. 😪
+- Tipo "Custom Event". 😪
+- Transformar propiedad Run en Iterador.
 
 ## Tag
 ---
-- Custom HTML 👍
+- Custom HTML. 👍
 - Deben tener nativamente una función para agregar objetos a dataLayer, de esta manera el dataLayer se podrá consultar como se hace actualmente y también se podrá escuchar los cambios en el dataLayer.
 - Regular Expression para detectar mala escritura en tipo Custom HTML. (Ejemplo: /(<script>)\w+\W+\d+\D+(<\\script>)/gm)
-- Posibilidad para importar archivos HTML
+- Posibilidad para importar archivos HTML.
 
 ## Variables
 ---
-- Nueva clase
+- Nueva clase.
 
 ---
 ## Fuentes
