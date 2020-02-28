@@ -66,7 +66,7 @@ export default class Project {
     }
 
     // Getters
-    get stateOK(x) {
+    get stateOK() {
         return this._stateOK;
     }
 
@@ -74,21 +74,27 @@ export default class Project {
     run () {
         if (this._stateOK) {
             try {
-                let result = false;
-                let results = [];
+                let trigger = this._triggers[0][0](1, 10);
 
-                for (let indexOR = 0; indexOR < this._triggers.length; indexOR++) {
-                    for (let indexAND = 0; indexAND < this._triggers[indexOR].length; indexAND++) {
-                        if (indexAND === 0)
-                            results[indexOR] = this._triggers[indexOR][indexAND].run();
-                        else
-                            results[indexOR] = results[indexOR] && this._triggers[indexOR][indexAND].run();
-                    }
+                for await (let value of generator) {
+                    alert(value);
                 }
 
-                for (let index = 0; index < results.length; index++) {
-                    result = result || results[index];
-                }
+                // let result = false;
+                // let results = [];
+
+                // for (let indexOR = 0; indexOR < this._triggers.length; indexOR++) {
+                //     for (let indexAND = 0; indexAND < this._triggers[indexOR].length; indexAND++) {
+                //         if (indexAND === 0)
+                //             results[indexOR] = this._triggers[indexOR][indexAND].run();
+                //         else
+                //             results[indexOR] = results[indexOR] && this._triggers[indexOR][indexAND].run();
+                //     }
+                // }
+
+                // for (let index = 0; index < results.length; index++) {
+                //     result = result || results[index];
+                // }
             } catch (error) {
 
             } finally {

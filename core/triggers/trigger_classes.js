@@ -71,85 +71,91 @@ export default class Trigger {
     }
 
     // Shot
-    *run() {
-        const self = this;
-
-        let _linea = 0;
-        try {
-            if (self._type == 'page view') {
-                if (document.readyState === 'loading' || document.querySelector('body')) {
-                    if (self._tagOK)
-                        if (self._tag.type === 'custom html') {
-                            let readyBody = setInterval(() => {
-                                if (document.body) {
-                                    clearInterval(readyBody);
-                                    yield true;
-                                    // self._tag.run();
-                                }
-                            }, 10);
-                        }
-                        else
-                            yield true;
-                            //self._tag.run();
-                    else
-                        console.warn('Warning: There is an issue with your tag.');
-                }
-            } else if (self._type == 'dom ready') {
-                let domReadyInt = setInterval(() => {
-                    if (document.readyState === 'interactive' || document.readyState === 'complete') {
-                        clearInterval(domReadyInt);
-                        if (self._tagOK)
-                            yield true;
-                            // self._tag.run();
-                        else
-                            console.warn('Warning: There is an issue with your tag.');
-                    }
-                }, 50);
-            } else if (self._type == 'window loaded') {
-                let winLoadedInt = setInterval(() => {
-                    if (document.readyState === 'complete') {
-                        clearInterval(winLoadedInt);
-                        if (self._tagOK)
-                            yield true;
-                            // self._tag.run();
-                        else
-                            console.warn('Warning: There is an issue with your tag.');
-                    }
-                }, 50);
-            } else if (self._type == 'custom event') {
-                _linea = 1;
-                if (!window.dataLayer) {
-                    _linea = 1.1;
-                    window.dataLayer = [];
-                    console.warn('Warning: There is no "window.dataLayer", check that GTM is properly installed.');
-                }
-
-                _linea = 2;
-                window.dataLayer = new Proxy(window.dataLayer, {
-                    apply: function (target, thisArg, argumentsList) {
-                        return thisArg[target].apply(this, argumentList);
-                    },
-                    deleteProperty: function (target, property) {
-                        // console.log("Deleted %s", property);
-                        return true;
-                    },
-                    set: function (target, property, value, receiver) {
-                        if (self._tagOK)
-                            if (value.event)
-                                if (self._event == value.event)
-                                    yield true;
-                                    // self._tag.run();
-
-                        target[property] = value;
-                        // console.log("Set %s to %o", property, value);
-                        return true;
-                    }
-                });
-            }
-        } catch (error) {
-            console.error(`Línea: ${_linea} | Mensaje: ${error.message}`);
-        } finally {
-            this._shooted = 1;
+    async *run(start, end) { // aync *run()
+        for (let i = start; i <= end; i++) {
+            await new Promise(resolve => setTimeout(resolve, 1000));
+            yield i;
         }
     }
+    // run() {
+    //     const self = this;
+
+    //     let _linea = 0;
+    //     try {
+    //         if (self._type == 'page view') {
+    //             if (document.readyState === 'loading' || document.querySelector('body')) {
+    //                 if (self._tagOK)
+    //                     if (self._tag.type === 'custom html') {
+    //                         let readyBody = setInterval(() => {
+    //                             if (document.body) {
+    //                                 clearInterval(readyBody);
+    //                                 yield true;
+    //                                 // self._tag.run();
+    //                             }
+    //                         }, 10);
+    //                     }
+    //                     else
+    //                         yield true;
+    //                         //self._tag.run();
+    //                 else
+    //                     console.warn('Warning: There is an issue with your tag.');
+    //             }
+    //         } else if (self._type == 'dom ready') {
+    //             let domReadyInt = setInterval(() => {
+    //                 if (document.readyState === 'interactive' || document.readyState === 'complete') {
+    //                     clearInterval(domReadyInt);
+    //                     if (self._tagOK)
+    //                         yield true;
+    //                         // self._tag.run();
+    //                     else
+    //                         console.warn('Warning: There is an issue with your tag.');
+    //                 }
+    //             }, 50);
+    //         } else if (self._type == 'window loaded') {
+    //             let winLoadedInt = setInterval(() => {
+    //                 if (document.readyState === 'complete') {
+    //                     clearInterval(winLoadedInt);
+    //                     if (self._tagOK)
+    //                         yield true;
+    //                         // self._tag.run();
+    //                     else
+    //                         console.warn('Warning: There is an issue with your tag.');
+    //                 }
+    //             }, 50);
+    //         } else if (self._type == 'custom event') {
+    //             _linea = 1;
+    //             if (!window.dataLayer) {
+    //                 _linea = 1.1;
+    //                 window.dataLayer = [];
+    //                 console.warn('Warning: There is no "window.dataLayer", check that GTM is properly installed.');
+    //             }
+
+    //             _linea = 2;
+    //             window.dataLayer = new Proxy(window.dataLayer, {
+    //                 apply: function (target, thisArg, argumentsList) {
+    //                     return thisArg[target].apply(this, argumentList);
+    //                 },
+    //                 deleteProperty: function (target, property) {
+    //                     // console.log("Deleted %s", property);
+    //                     return true;
+    //                 },
+    //                 set: function (target, property, value, receiver) {
+    //                     if (self._tagOK)
+    //                         if (value.event)
+    //                             if (self._event == value.event)
+    //                                 yield true;
+    //                                 // self._tag.run();
+
+    //                     target[property] = value;
+    //                     // console.log("Set %s to %o", property, value);
+    //                     return true;
+    //                 }
+    //             });
+    //         }
+    //     } catch (error) {
+    //         console.error(`Línea: ${_linea} | Mensaje: ${error.message}`);
+    //     } finally {
+    //         this._shooted = 1;
+    //     }
+    // }
 }

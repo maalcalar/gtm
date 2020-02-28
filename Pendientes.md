@@ -51,3 +51,4 @@ https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects
 https://developer.mozilla.org/en-US/docs/Web/API/Streams_API
 https://developer.mozilla.org/en-US/docs/Web/API/Streams_API/Using_readable_streams
 https://github.com/mdn/dom-examples/blob/master/streams/simple-random-stream/index.html
+https://javascript.info/async-iterators-generators
