@@ -76,7 +76,7 @@ export default class Project {
             try {
                 let trigger = this._triggers[0][0](1, 10);
 
-                for await (let value of generator) {
+                for await (let value of trigger) {
                     alert(value);
                 }
 
