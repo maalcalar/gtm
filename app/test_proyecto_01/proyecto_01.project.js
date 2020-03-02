@@ -4,4 +4,14 @@ import tag from "../Tags/custom_html.tag";
 
 const project = new Project(trigger, tag);
 
-project.run();
+const generador = project.run();
+
+for await (let value of generador) {
+    console.log(value);
+}
+
+// PRUEBA 1 FUNCIONA BIEN
+// console.log(generador.next());
+// console.log(generador.next());
+// console.log(generador.next());
+// console.log(generador.next());

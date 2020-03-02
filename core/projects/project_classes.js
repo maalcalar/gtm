@@ -71,35 +71,57 @@ export default class Project {
     }
 
     // Work
-    run () {
-        if (this._stateOK) {
-            try {
-                let trigger = this._triggers[0][0](1, 10);
+    async *run() {
+        let cuenta = 0;
+        let contador = setInterval(() => {
+            console.log(++cuenta);
+            await new Promise.resolve(cuenta);
+            yield cuenta;
 
-                for await (let value of trigger) {
-                    alert(value);
-                }
-
-                // let result = false;
-                // let results = [];
-
-                // for (let indexOR = 0; indexOR < this._triggers.length; indexOR++) {
-                //     for (let indexAND = 0; indexAND < this._triggers[indexOR].length; indexAND++) {
-                //         if (indexAND === 0)
-                //             results[indexOR] = this._triggers[indexOR][indexAND].run();
-                //         else
-                //             results[indexOR] = results[indexOR] && this._triggers[indexOR][indexAND].run();
-                //     }
-                // }
-
-                // for (let index = 0; index < results.length; index++) {
-                //     result = result || results[index];
-                // }
-            } catch (error) {
-
-            } finally {
-
+            if (cuenta > 5) {
+                clearInterval(contador);
             }
-        }
+        }, 1000);
+
+        yield cuenta;
     }
+
+    // PRUEBA 1 FUNCIONA BIEN
+    // *run() {
+    //     yield 1;
+    //     yield 2;
+    //     yield 3;
+    // }
+
+    // run () {
+    //     if (this._stateOK) {
+    //         try {
+    //             let trigger = this._triggers[0][0](1, 10);
+
+    //             for await (let value of trigger) {
+    //                 alert(value);
+    //             }
+
+    //             // let result = false;
+    //             // let results = [];
+
+    //             // for (let indexOR = 0; indexOR < this._triggers.length; indexOR++) {
+    //             //     for (let indexAND = 0; indexAND < this._triggers[indexOR].length; indexAND++) {
+    //             //         if (indexAND === 0)
+    //             //             results[indexOR] = this._triggers[indexOR][indexAND].run();
+    //             //         else
+    //             //             results[indexOR] = results[indexOR] && this._triggers[indexOR][indexAND].run();
+    //             //     }
+    //             // }
+
+    //             // for (let index = 0; index < results.length; index++) {
+    //             //     result = result || results[index];
+    //             // }
+    //         } catch (error) {
+
+    //         } finally {
+
+    //         }
+    //     }
+    // }
 }

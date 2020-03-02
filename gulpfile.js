@@ -1,5 +1,6 @@
 const { src, dest } = require('gulp');
 var rename = require('gulp-rename');
+const babel = require('gulp-babel');
 const uglify = require('gulp-uglify-es').default;
 
 function defaultTask(cb) {
