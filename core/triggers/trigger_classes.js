@@ -71,12 +71,77 @@ export default class Trigger {
     }
 
     // Shot
-    async *run(start, end) { // aync *run()
-        for (let i = start; i <= end; i++) {
-            await new Promise(resolve => setTimeout(resolve, 1000));
-            yield i;
+    async *run() {
+        const self = this;
+        let _linea = 0;
+
+        try {
+            _linea = 1;
+            if (self._type == 'page view') {
+                _linea = 2.0;
+                if (document.readyState === 'loading' || document.querySelector('body')) { // Es posible tener que poner un SetInterval
+                    _linea = 2.1;
+                    yield true;
+                }
+            } else if (self._type == 'dom ready') {
+                _linea = 3.0;
+                let domReadyInt = setInterval(() => {
+                    if (document.readyState === 'interactive' || document.readyState === 'complete') {
+                        clearInterval(domReadyInt);
+                        yield true;
+                    }
+                }, 50);
+            } else if (self._type == 'window loaded') {
+                _linea = 4.0;
+                let winLoadedInt = setInterval(() => {
+                    if (document.readyState === 'complete') {
+                        clearInterval(winLoadedInt);
+                        yield true;
+                    }
+                }, 50);
+            } else if (self._type == 'custom event') {
+                _linea = 5.0;
+                if (!window.dataLayer) {
+                    // window.dataLayer = [];
+                    console.warn('Warning: There is no "window.dataLayer", check that GTM is properly installed.');
+                    yield false;
+                    return false;
+                }
+
+                _linea = 5.1;
+                const dlProxy = new Proxy(window.dataLayer, { // ESTE PROXY ES TEMPORAL HASTA SABER DÓNDE PONERLO
+                    apply: function (target, thisArg, argumentsList) {
+                        return thisArg[target].apply(this, argumentList);
+                    },
+                    deleteProperty: function (target, property) {
+                        return true;
+                    },
+                    set: function (target, property, value, receiver) {
+                        if (value.event)
+                            if (self._event == value.event)
+                                yield true;
+
+                        target[property] = value;
+                        return true;
+                    }
+                });
+            }
+        } catch(error) {
+            console.error(`Línea: ${_linea} | Mensaje: ${error.message}`);
+        } finally {
+            // this._shooted = 1;
         }
     }
+
+    // NUEVO MÉTODO
+    // async *run(start, end) {
+    //     for (let i = start; i <= end; i++) {
+    //         await new Promise(resolve => setTimeout(resolve, 1000));
+    //         yield i;
+    //     }
+    // }
+
+    // ANTIGUO
     // run() {
     //     const self = this;
 

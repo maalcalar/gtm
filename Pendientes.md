@@ -24,7 +24,7 @@
 
 ## Trigger
 ---
-- Agregar "Try catch" para evitar caída. 😪
+- Agregar "Try catch" para evitar caída. 👍
 - Tipo "Custom Event". 😪
 - Transformar propiedad Run en Iterador. 😪
 - Quitar los Tags de la declaración. 😪
