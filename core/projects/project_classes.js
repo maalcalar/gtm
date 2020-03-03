@@ -1,4 +1,5 @@
 import Trigger from "../triggers/trigger_classes";
+import Tag from "../tags/tag_classes";
 
 export default class Project {
     constructor(triggers = undefined, tags = undefined) {
@@ -36,8 +37,8 @@ export default class Project {
         if (this._tags != undefined) {
             if (typeof this._tags === 'object') {
                 if (!this._tags.length) {
-                    if (this._tags instanceof Trigger) {
-                        this._tags = [this._tags];
+                    if (this._tags instanceof Tag) {
+                        this._tags = [[this._tags]];
 
                         this._tagsOK = true;
                     } else {
@@ -71,21 +72,71 @@ export default class Project {
     }
 
     // Work
-    async *run() {
-        let cuenta = 0;
+    run () {
+        const self = this;
+        let _linea = 0;
 
-        for (let i = 0; i <= 10; i++) {
-            await new Promise(resolve => setTimeout(resolve, 1000));
+        if (this._stateOK) {
+            _linea = 1;
+            try {
+                let trigger = this._triggers[0][0].run();
+                let tag = this._tags[0][0];
 
-            yield ++cuenta;
+                (async function() {
+                    for await (let value of trigger) {
+                        tag.run();
+                        // console.log('Valor de iterador: ', value);
+                    }
+                })();
 
-            if (cuenta > 5) {
-                break;
+
+                // let trigger = this._triggers[0][0](1, 10);
+
+                // for await (let value of trigger) {
+                //     alert(value);
+                // }
+
+                // let result = false;
+                // let results = [];
+
+                // for (let indexOR = 0; indexOR < this._triggers.length; indexOR++) {
+                //     for (let indexAND = 0; indexAND < this._triggers[indexOR].length; indexAND++) {
+                //         if (indexAND === 0)
+                //             results[indexOR] = this._triggers[indexOR][indexAND].run();
+                //         else
+                //             results[indexOR] = results[indexOR] && this._triggers[indexOR][indexAND].run();
+                //     }
+                // }
+
+                // for (let index = 0; index < results.length; index++) {
+                //     result = result || results[index];
+                // }
+            } catch (error) {
+                console.error(`Línea: ${_linea} | Mensaje: ${error.message}`);
+            } finally {
+
             }
+        } else {
+            console.error('Error: There was an error while setting the project.');
         }
-
-        yield cuenta;
     }
+    
+    // PRUEBA 2 FUNCIONA BIEN
+    // async *run() {
+    //     let cuenta = 0;
+
+    //     for (let i = 0; i <= 10; i++) {
+    //         await new Promise(resolve => setTimeout(resolve, 1000));
+
+    //         yield ++cuenta;
+
+    //         if (cuenta > 5) {
+    //             break;
+    //         }
+    //     }
+
+    //     yield cuenta;
+    // }
 
     // PRUEBA 1 FUNCIONA BIEN
     // *run() {
