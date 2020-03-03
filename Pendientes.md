@@ -17,16 +17,15 @@
 - Nueva clase. 👍
 - Incluir Triggers, Tags. 😪
 - Los proyectos pueden establecer múltiples Triggers con condicionales.
-- Crear Stream para los Triggers.
 - Incluir Excepciones en Triggers.
-- Orden de Triggers.
 - Orden de Tags.
 - Agregar "Try catch" para evitar caída. 😪
+- Agregar excepción para Triggers de tipo 'Page view'.
 
 ## Trigger
 ---
 - Agregar "Try catch" para evitar caída. 👍
-- Tipo "Custom Event". 😪
+- Tipo "Custom Event". Encontrar solución para yield. 😪
 - Transformar propiedad Run en Iterador asíncrono. 😪
 - Quitar los Tags de la declaración. 😪
 - Crear un Proxy para la observación de dataLayer. 😪
