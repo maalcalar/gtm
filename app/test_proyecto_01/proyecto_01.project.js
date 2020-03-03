@@ -6,9 +6,11 @@ const project = new Project(trigger, tag);
 
 const generador = project.run();
 
-for await (let value of generador) {
-    console.log(value);
-}
+(async function() {
+    for await (let value of generador) {
+        console.log(value);
+    }
+})();
 
 // PRUEBA 1 FUNCIONA BIEN
 // console.log(generador.next());

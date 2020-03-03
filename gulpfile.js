@@ -8,10 +8,29 @@ function defaultTask(cb) {
     cb();
 }
 
+// function js() {
+//     return src('app/test_proyecto_01/*.project.js')
+//         .pipe(babel({
+//             plugins: ['@babel/transform-runtime']
+//         }))
+//         .pipe(rename((path) => path.extname = '.js'))
+//         .pipe(uglify())
+//         .pipe(dest('app/'));
+// }
+
 function js() {
     return src('app/test_proyecto_01/*.project.js')
         .pipe(babel({
-            "presets": ["@babel/env"],
+            presets: [
+                [
+                    "@babel/env", 
+                    {
+                        'targets': {
+                            'esmodules': true
+                        }
+                    }
+                ]
+            ],
             plugins: ['@babel/transform-runtime']
         }))
         .pipe(rename((path) => path.extname = '.js'))
