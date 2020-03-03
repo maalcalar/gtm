@@ -21,6 +21,7 @@
 - Incluir Excepciones en Triggers.
 - Orden de Triggers.
 - Orden de Tags.
+- Agregar "Try catch" para evitar caída. 😪
 
 ## Trigger
 ---
