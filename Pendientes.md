@@ -26,7 +26,9 @@
 ---
 - Agregar "Try catch" para evitar caída. 😪
 - Tipo "Custom Event". 😪
-- Transformar propiedad Run en Iterador.
+- Transformar propiedad Run en Iterador. 😪
+- Quitar los Tags de la declaración. 😪
+- Crear un Proxy para la observación de dataLayer. 😪
 
 ## Tag
 ---
