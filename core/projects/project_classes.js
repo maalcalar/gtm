@@ -73,15 +73,16 @@ export default class Project {
     // Work
     async *run() {
         let cuenta = 0;
-        let contador = setInterval(() => {
-            console.log(++cuenta);
-            await new Promise.resolve(cuenta);
-            yield cuenta;
+
+        for (let i = 0; i <= 10; i++) {
+            await new Promise(resolve => setTimeout(resolve, 1000));
+
+            yield ++cuenta;
 
             if (cuenta > 5) {
-                clearInterval(contador);
+                break;
             }
-        }, 1000);
+        }
 
         yield cuenta;
     }

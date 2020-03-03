@@ -8,7 +8,7 @@ const generador = project.run();
 
 (async function() {
     for await (let value of generador) {
-        console.log(value);
+        console.log('Iterator value: ', value);
     }
 })();
 
