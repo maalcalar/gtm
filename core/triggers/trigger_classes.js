@@ -1,21 +1,8 @@
-import Tag from "../tags/tag_classes";
-
 export default class Trigger {
-    constructor(type = 'page view', tag = undefined) {
+    constructor(type = 'page view') {
         this._type = typeof type === 'string' ? type.toLowerCase() : 'page view';
         this._shooted = 0;
-        this._tag = tag;
-        this._tagOK = false;
         this._event = '';
-
-        if (this._tag != undefined) {
-            if (!(this._tag instanceof Tag))
-                console.log('Warning: Your tag is not well-formed.');
-            else
-                this._tagOK = true;
-        } else {
-            console.warn('Warning: You did not pass a tag.');
-        }
 
         // this.run();
     }
@@ -27,19 +14,6 @@ export default class Trigger {
 
     set shooted(x) {
         return false;
-    }
-
-    set tag(x) {
-        this._tag = x;
-
-        if (this._tag != undefined) {
-            if (!(this._tag instanceof Tag))
-                console.log('Warning: Your tag is not well-formed.');
-            else
-                this._tagOK = true;
-        } else {
-            console.warn('Warning: You did not pass a tag.');
-        }
     }
 
     set event(x) {
@@ -62,10 +36,6 @@ export default class Trigger {
         return this._shooted;
     }
 
-    get tag() {
-        return this._tag;
-    }
-
     get event() {
         return this._event;
     }
@@ -85,20 +55,36 @@ export default class Trigger {
                 }
             } else if (self._type == 'dom ready') {
                 _linea = 3.0;
-                let domReadyInt = setInterval(() => {
-                    if (document.readyState === 'interactive' || document.readyState === 'complete') {
-                        clearInterval(domReadyInt);
-                        yield true;
-                    }
-                }, 50);
+                let domReadyInt = false;
+                while (!domReadyInt) { // ENCONTRAR ALTERNATIVA A WHILE
+                    await new Promise(resolve => setTimeout(resolve, 50));
+                    if (document.readyState === 'interactive' || document.readyState === 'complete')
+                        domReadyInt = true;
+                }
+                yield true;
+
+                // let domReadyInt = setInterval(() => {
+                //     if (document.readyState === 'interactive' || document.readyState === 'complete') {
+                //         clearInterval(domReadyInt);
+                //         // yield true;
+                //     }
+                // }, 50);
             } else if (self._type == 'window loaded') {
                 _linea = 4.0;
-                let winLoadedInt = setInterval(() => {
-                    if (document.readyState === 'complete') {
-                        clearInterval(winLoadedInt);
-                        yield true;
-                    }
-                }, 50);
+                let winLoadedInt = false;
+                while (!winLoadedInt) { // ENCONTRAR ALTERNATIVA A WHILE
+                    await new Promise(resolve => setTimeout(resolve, 50));
+                    if (document.readyState === 'complete')
+                        winLoadedInt = true;
+                }
+                yield true;
+
+                // let winLoadedInt = setInterval(() => {
+                //     if (document.readyState === 'complete') {
+                //         clearInterval(winLoadedInt);
+                //         // yield true;
+                //     }
+                // }, 50);
             } else if (self._type == 'custom event') {
                 _linea = 5.0;
                 if (!window.dataLayer) {
@@ -119,7 +105,7 @@ export default class Trigger {
                     set: function (target, property, value, receiver) {
                         if (value.event)
                             if (self._event == value.event)
-                                yield true;
+                                // yield true; // HAY QUE ENCONTRAR FORMA DE REEMPLAZAR ESTO
 
                         target[property] = value;
                         return true;
