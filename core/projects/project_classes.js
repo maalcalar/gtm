@@ -3,8 +3,11 @@ import Tag from "../tags/tag_classes";
 
 export default class Project {
     constructor(triggers = undefined, tags = undefined) {
-        this._triggers = triggers;
-        this._tags = tags;
+        self = this;
+        this._prevtriggers = triggers;
+        this._triggers = [];
+        this._prevtags = tags;
+        this._tags = [];
         // this._variables = variables;
         this._triggersOK = false;
         this._tagsOK = false;
@@ -12,26 +15,51 @@ export default class Project {
         this._stateOK = false;
 
         // Revisión y formato de triggers
-        if (this._triggers != undefined) {
-            if (typeof this._triggers === 'object') {
-                if (!this._triggers.length) {
-                    if (this._triggers instanceof Trigger) {
-                        this._triggers = [[this._triggers]];
-
-                        this._triggersOK = true;
-                    } else {
-                        console.log('Warning: Your trigger is not well-formed.');
-                    }
-                } else {
-                    // Revisar arreglo
-                    // Formar un arreglo de triggers
-                }
-            } else {
-                console.log('Warning: Your trigger is not a valid object.');
-            }
+        if (self.testTrigger(self._prevtriggers) === 'none') {
+            console.warn('Warning: The "triggers" param is not a valid object.');
+        } else if (self.testTrigger(self._prevtriggers) === 'trigger') {
+            self._triggers[0] = [self._prevtriggers];
         } else {
-            console.warn('Warning: You did not pass a trigger.');
+            for (let indexn1 = 0; indexn1 < self._prevtriggers.length; indexn1++) {
+                const elementn1 = self._prevtriggers[indexn1];
+                
+                if (self.testTrigger(elementn1) === 'none') {
+
+                } else if (self.testTrigger(elementn1) === 'trigger') {
+                    self._triggers[indexn1] = [elementn1];
+                } else {
+                    self._triggers[indexn1] = [];
+                    for (let indexn2 = 0; indexn2 < elementn1.length; indexn2++) {
+                        const elementn2 = elementn1[indexn2];
+                        
+                        if (self.testTrigger(elementn2) === 'trigger') {
+                            self._triggers[indexn1].push(elementn2);
+                        }
+                    }
+                }
+            }
         }
+
+        // if (this._triggers != undefined) {
+        //     if (typeof this._triggers === 'object') {
+        //         if (!this._triggers.length) {
+        //             if (this._triggers instanceof Trigger) {
+        //                 this._triggers = [[this._triggers]];
+
+        //                 this._triggersOK = true;
+        //             } else {
+        //                 console.log('Warning: Your trigger is not well-formed.');
+        //             }
+        //         } else {
+        //             // Revisar arreglo
+        //             // Formar un arreglo de triggers
+        //         }
+        //     } else {
+        //         console.log('Warning: Your trigger is not a valid object.');
+        //     }
+        // } else {
+        //     console.warn('Warning: You did not pass a trigger.');
+        // }
 
         // Revisión y formato de tags
         if (this._tags != undefined) {
@@ -69,6 +97,29 @@ export default class Project {
     // Getters
     get stateOK() {
         return this._stateOK;
+    }
+
+    // Utils
+    testTrigger (trigger) {
+        let response = 'none';
+
+        try {
+            if (trigger != undefined) {
+                if (typeof trigger === 'object') {
+                    if (!trigger.length) {
+                        if (trigger instanceof Trigger) {
+                            response = 'trigger';
+                        }
+                    } else {
+                        response = 'array';
+                    }
+                }
+            }
+        } catch (error) {
+            response = 'none';
+        }
+
+        return response;
     }
 
     // Work
