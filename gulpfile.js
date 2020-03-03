@@ -22,8 +22,18 @@ function defaultTask(cb) {
 function js() {
     return src('app/test_proyecto_01/*.project.js')
         .pipe(babel({
-            presets: ["@babel/env"],
-            plugins: ['@babel/transform-runtime']
+            presets: [
+                [
+                    "@babel/env", {
+                    "targets": {
+                        "edge": "17",
+                        "firefox": "60",
+                        "chrome": "67",
+                        "safari": "11.1"
+                    }, 
+                    "useBuiltIns": "usage"
+                }]],
+            plugins: ["@babel/transform-runtime"]
         }))
         .pipe(webpack({ output: { filename: 'proyecto_01.project.js' }}))
         .pipe(rename((path) => path.extname = '.js'))
