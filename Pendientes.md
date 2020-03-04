@@ -2,7 +2,7 @@
 ---
 - Carpetas en las que sólo habrán Triggers, Tags y Variables. Esto permitiría evitar redundancia de código para su reutilización. 👍
 - Las demás carpetas de proyectos recolectan/importan Triggers, Tags y/o Variables. 👍
-- Los Proyectos deben permitir iteraciones infinitas de parte de los Triggers.
+- Los Proyectos deben permitir iteraciones infinitas de parte de los Triggers. 👍
 
 ## Documentación
 ---
@@ -14,7 +14,7 @@
 
 ## Bundler - Gulp
 --
-- Desinstalar webpack.
+- Desinstalar webpack. 👍
 - Automatizar la entrada de scripts.
 - Automatizar la salida de scripts.
 
