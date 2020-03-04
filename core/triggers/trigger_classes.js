@@ -1,10 +1,11 @@
 export default class Trigger {
-    constructor(type = 'page view') {
+    constructor(type = 'page view', config = {}) {
         this._type = typeof type === 'string' ? type.toLowerCase() : 'page view';
         this._shooted = 0;
         this._event = '';
+        this._config = config;
 
-        // this.run();
+
     }
 
     // Setters
@@ -62,13 +63,6 @@ export default class Trigger {
                         domReadyInt = true;
                 }
                 yield true;
-
-                // let domReadyInt = setInterval(() => {
-                //     if (document.readyState === 'interactive' || document.readyState === 'complete') {
-                //         clearInterval(domReadyInt);
-                //         // yield true;
-                //     }
-                // }, 50);
             } else if (self._type == 'window loaded') {
                 _linea = 4.0;
                 let winLoadedInt = false;
@@ -78,13 +72,6 @@ export default class Trigger {
                         winLoadedInt = true;
                 }
                 yield true;
-
-                // let winLoadedInt = setInterval(() => {
-                //     if (document.readyState === 'complete') {
-                //         clearInterval(winLoadedInt);
-                //         // yield true;
-                //     }
-                // }, 50);
             } else if (self._type == 'custom event') {
                 _linea = 5.0;
                 if (!window.dataLayer) {
