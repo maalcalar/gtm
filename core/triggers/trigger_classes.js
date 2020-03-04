@@ -1,10 +1,11 @@
 export default class Trigger {
-    constructor(type = 'page view') {
+    constructor(type = 'page view', config = {}) {
         this._type = typeof type === 'string' ? type.toLowerCase() : 'page view';
         this._shooted = 0;
         this._event = '';
+        this._config = config;
 
-        // this.run();
+
     }
 
     // Setters
@@ -62,13 +63,6 @@ export default class Trigger {
                         domReadyInt = true;
                 }
                 yield true;
-
-                // let domReadyInt = setInterval(() => {
-                //     if (document.readyState === 'interactive' || document.readyState === 'complete') {
-                //         clearInterval(domReadyInt);
-                //         // yield true;
-                //     }
-                // }, 50);
             } else if (self._type == 'window loaded') {
                 _linea = 4.0;
                 let winLoadedInt = false;
@@ -78,39 +72,47 @@ export default class Trigger {
                         winLoadedInt = true;
                 }
                 yield true;
-
-                // let winLoadedInt = setInterval(() => {
-                //     if (document.readyState === 'complete') {
-                //         clearInterval(winLoadedInt);
-                //         // yield true;
-                //     }
-                // }, 50);
             } else if (self._type == 'custom event') {
                 _linea = 5.0;
                 if (!window.dataLayer) {
                     // window.dataLayer = [];
                     console.warn('Warning: There is no "window.dataLayer", check that GTM is properly installed.');
-                    yield false;
+                    // yield false;
                     return false;
                 }
 
                 _linea = 5.1;
-                const dlProxy = new Proxy(window.dataLayer, { // ESTE PROXY ES TEMPORAL HASTA SABER DÓNDE PONERLO
-                    apply: function (target, thisArg, argumentsList) {
-                        return thisArg[target].apply(this, argumentList);
-                    },
-                    deleteProperty: function (target, property) {
-                        return true;
-                    },
-                    set: function (target, property, value, receiver) {
-                        if (value.event)
-                            if (self._event == value.event)
-                                // yield true; // HAY QUE ENCONTRAR FORMA DE REEMPLAZAR ESTO
-
-                        target[property] = value;
-                        return true;
+                let dlAnt = JSON.parse(JSON.stringify(window.dataLayer));
+                while (true) {
+                    await new Promise(resolve => setTimeout(resolve, 10));
+                    if (dlAnt.length != window.dataLayer.length) {
+                        for (let i = dlAnt.length; i < window.dataLayer.length; i++) {
+                            if (window.dataLayer[i].event !== undefined) {
+                                if (window.dataLayer[i].event === self.event) {
+                                    yield true;
+                                }
+                            }
+                        }
+                        dlAnt = JSON.parse(JSON.stringify(window.dataLayer));
                     }
-                });
+                }
+
+                // const dlProxy = new Proxy(window.dataLayer, { // ESTE PROXY ES TEMPORAL HASTA SABER DÓNDE PONERLO
+                //     apply: function (target, thisArg, argumentsList) {
+                //         return thisArg[target].apply(this, argumentList);
+                //     },
+                //     deleteProperty: function (target, property) {
+                //         return true;
+                //     },
+                //     set: function (target, property, value, receiver) {
+                //         if (value.event)
+                //             if (self._event == value.event)
+                //                 // yield true; // HAY QUE ENCONTRAR FORMA DE REEMPLAZAR ESTO
+
+                //         target[property] = value;
+                //         return true;
+                //     }
+                // });
             }
         } catch(error) {
             console.error(`Línea: ${_linea} | Mensaje: ${error.message}`);
