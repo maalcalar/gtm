@@ -6,15 +6,15 @@ export default class Tag {
         this._stateOK = false;
     }
 
-    dlProxy = new Proxy(window.dataLayer, {
-        set: function(target, property, value, receiver) {
-            target[property] = value;
-            // En caso lo anterior no funcione adecuadamente
-            // if (property !== 'length')
-            //     target.push(value);
-            return false;
-        }
-    });
+    // dlProxy = new Proxy(window.dataLayer, {
+    //     set: function(target, property, value, receiver) {
+    //         target[property] = value;
+    //         // En caso lo anterior no funcione adecuadamente
+    //         // if (property !== 'length')
+    //         //     target.push(value);
+    //         return false;
+    //     }
+    // });
 
     // Setters
     set type(x) {
