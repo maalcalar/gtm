@@ -8,15 +8,21 @@
 ---
 - Establecer un documento para que los desarrolladores puedan ingresar/documentar sus tareas y/o aportes. 😪
 
-## Bundler - Webpack
+## Bundler - Webpack ❌
 ---
 - Automatizar la entrada de scripts. 👍
+
+## Bundler - Gulp
+--
+- Desinstalar webpack.
+- Automatizar la entrada de scripts.
+- Automatizar la salida de scripts.
 
 ### Proyectos
 ---
 - Nueva clase. 👍
-- Incluir Triggers, Tags. 😪
-- Los proyectos pueden establecer múltiples Triggers con condicionales.
+- Incluir Triggers, Tags. Refactorizar. 😪
+- Los proyectos pueden establecer múltiples Triggers con condicionales. 😪
 - Incluir Excepciones en Triggers.
 - Orden de Tags.
 - Agregar "Try catch" para evitar caída. 😪
