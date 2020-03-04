@@ -160,40 +160,6 @@ export default class Project {
                         })();
                     }
                 }
-
-                // FUNCIONA
-                // let trigger = this._triggers[0][0].run();
-                // let tag = this._tags[0][0];
-
-                // (async function() {
-                //     for await (let value of trigger) {
-                //         tag.run();
-                //         // console.log('Valor de iterador: ', value);
-                //     }
-                // })();
-
-
-                // let trigger = this._triggers[0][0](1, 10);
-
-                // for await (let value of trigger) {
-                //     alert(value);
-                // }
-
-                // let result = false;
-                // let results = [];
-
-                // for (let indexOR = 0; indexOR < this._triggers.length; indexOR++) {
-                //     for (let indexAND = 0; indexAND < this._triggers[indexOR].length; indexAND++) {
-                //         if (indexAND === 0)
-                //             results[indexOR] = this._triggers[indexOR][indexAND].run();
-                //         else
-                //             results[indexOR] = results[indexOR] && this._triggers[indexOR][indexAND].run();
-                //     }
-                // }
-
-                // for (let index = 0; index < results.length; index++) {
-                //     result = result || results[index];
-                // }
             } catch (error) {
                 console.error(`Línea: ${_linea} | Mensaje: ${error.message}`);
             } finally {
@@ -226,37 +192,5 @@ export default class Project {
     //     yield 1;
     //     yield 2;
     //     yield 3;
-    // }
-
-    // run () {
-    //     if (this._stateOK) {
-    //         try {
-    //             let trigger = this._triggers[0][0](1, 10);
-
-    //             for await (let value of trigger) {
-    //                 alert(value);
-    //             }
-
-    //             // let result = false;
-    //             // let results = [];
-
-    //             // for (let indexOR = 0; indexOR < this._triggers.length; indexOR++) {
-    //             //     for (let indexAND = 0; indexAND < this._triggers[indexOR].length; indexAND++) {
-    //             //         if (indexAND === 0)
-    //             //             results[indexOR] = this._triggers[indexOR][indexAND].run();
-    //             //         else
-    //             //             results[indexOR] = results[indexOR] && this._triggers[indexOR][indexAND].run();
-    //             //     }
-    //             // }
-
-    //             // for (let index = 0; index < results.length; index++) {
-    //             //     result = result || results[index];
-    //             // }
-    //         } catch (error) {
-
-    //         } finally {
-
-    //         }
-    //     }
     // }
 }
