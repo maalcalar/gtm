@@ -18,69 +18,57 @@ export default class Project {
         if (self.testTrigger(self._prevtriggers) === 'none') {
             console.warn('Warning: The "triggers" param is not a valid object.');
         } else if (self.testTrigger(self._prevtriggers) === 'trigger') {
-            self._triggers[0] = [self._prevtriggers];
+            self._triggers[0] = [{trigger: self._prevtriggers, value: false}];
+            this._triggersOK = true;
         } else {
             for (let indexn1 = 0; indexn1 < self._prevtriggers.length; indexn1++) {
                 const elementn1 = self._prevtriggers[indexn1];
-                
+
                 if (self.testTrigger(elementn1) === 'none') {
 
                 } else if (self.testTrigger(elementn1) === 'trigger') {
-                    self._triggers[indexn1] = [elementn1];
+                    if (!self._triggers[0]) {
+                        self._triggers[0] = [];
+                    }
+                    self._triggers[0][indexn1] = {trigger: elementn1, value: false};
+                    this._triggersOK = true;
                 } else {
-                    self._triggers[indexn1] = [];
+                    if (!self._triggers[indexn1]) {
+                        self._triggers[indexn1] = [];
+                    }
                     for (let indexn2 = 0; indexn2 < elementn1.length; indexn2++) {
-                        const elementn2 = elementn1[indexn2];
+                        const elementn2 = self._prevtriggers[indexn1][indexn2];
                         
                         if (self.testTrigger(elementn2) === 'trigger') {
-                            self._triggers[indexn1].push(elementn2);
+                            self._triggers[indexn1][indexn2] = {trigger: elementn2, value: false};
+                            // self._triggers[indexn1].push(elementn2);
+                            this._triggersOK = true;
                         }
                     }
                 }
             }
         }
-
-        // if (this._triggers != undefined) {
-        //     if (typeof this._triggers === 'object') {
-        //         if (!this._triggers.length) {
-        //             if (this._triggers instanceof Trigger) {
-        //                 this._triggers = [[this._triggers]];
-
-        //                 this._triggersOK = true;
-        //             } else {
-        //                 console.log('Warning: Your trigger is not well-formed.');
-        //             }
-        //         } else {
-        //             // Revisar arreglo
-        //             // Formar un arreglo de triggers
-        //         }
-        //     } else {
-        //         console.log('Warning: Your trigger is not a valid object.');
-        //     }
-        // } else {
-        //     console.warn('Warning: You did not pass a trigger.');
-        // }
-
+        // console.log('Triggers', this._triggers);
         // Revisión y formato de tags
-        if (this._tags != undefined) {
-            if (typeof this._tags === 'object') {
-                if (!this._tags.length) {
-                    if (this._tags instanceof Tag) {
-                        this._tags = [[this._tags]];
+        if (this._prevtags != undefined) {
+            if (typeof this._prevtags === 'object') {
+                if (!this._prevtags.length) {
+                    if (this._prevtags instanceof Tag) {
+                        this._tags = [[this._prevtags]];
 
                         this._tagsOK = true;
                     } else {
-                        console.log('Warning: Your tag is not well-formed.');
+                        console.log('Warning1: Your tag is not well-formed.');
                     }
                 } else {
                     // Revisar arreglo
                     // Formar un arreglo de tags
                 }
             } else {
-                console.log('Warning: Your tag is not a valid object.');
+                console.log('Warning2: Your tag is not a valid object.');
             }
         } else {
-            console.warn('Warning: You did not passed a tag.');
+            console.warn('Warning3: You did not passed a tag.');
         }
 
         if (this._triggersOK && this._tagsOK)
@@ -130,15 +118,59 @@ export default class Project {
         if (this._stateOK) {
             _linea = 1;
             try {
-                let trigger = this._triggers[0][0].run();
                 let tag = this._tags[0][0];
 
-                (async function() {
-                    for await (let value of trigger) {
-                        tag.run();
-                        // console.log('Valor de iterador: ', value);
+                for (let indexn1 = 0; indexn1 < self._triggers.length; indexn1++) {
+                    self._triggers[indexn1].resolve = function() {
+                        let result = true;
+
+                        this.forEach(element => {
+                            result = result && element.value;
+                        });
+
+                        return result;
                     }
-                })();
+                }
+
+                self._triggers.resolve = function() {
+                    let result = false;
+
+                        this.forEach(element => {
+                            result = result || element.resolve();
+                        });
+
+                        return result;
+                }
+
+                for (let indexn1 = 0; indexn1 < self._triggers.length; indexn1++) {
+                    const elementn1 = self._triggers[indexn1];
+
+                    for (let indexn2 = 0; indexn2 < elementn1.length; indexn2++) {
+                        const elementn2 = elementn1[indexn2];
+                        let trigger = elementn2.trigger.run();
+
+                        (async function() {
+                            for await (let value of trigger) {
+                                elementn2.value = true; // ¿ES NECESARIO EL FALSE?
+
+                                if (self._triggers.resolve()) {
+                                    tag.run();
+                                }
+                            }
+                        })();
+                    }
+                }
+
+                // FUNCIONA
+                // let trigger = this._triggers[0][0].run();
+                // let tag = this._tags[0][0];
+
+                // (async function() {
+                //     for await (let value of trigger) {
+                //         tag.run();
+                //         // console.log('Valor de iterador: ', value);
+                //     }
+                // })();
 
 
                 // let trigger = this._triggers[0][0](1, 10);
