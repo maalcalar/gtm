@@ -154,7 +154,18 @@ export default class Project {
                                 elementn2.value = true; // ¿ES NECESARIO EL FALSE?
 
                                 if (self._triggers.resolve()) {
-                                    tag.run();
+                                    if (!trigger.type === 'page view') {
+                                        tag.run();
+                                    } else {
+                                        if (tag.type === 'custom html') {
+                                            let readyBody = setInterval(() => {
+                                                if (document.body) {
+                                                    clearInterval(readyBody);
+                                                    tag.run();
+                                                }
+                                            }, 10);
+                                        }
+                                    }
                                 }
                             }
                         })();
