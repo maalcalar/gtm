@@ -82,6 +82,7 @@ export default class Trigger {
                 }
 
                 _linea = 5.1;
+                let dlAnt = JSON.parse(JSON.stringify(window.dataLayer));
                 while (true) {
                     await new Promise(resolve => setTimeout(resolve, 10));
                     if (dlAnt.length != window.dataLayer.length) {
