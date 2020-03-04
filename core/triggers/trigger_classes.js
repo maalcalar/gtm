@@ -77,27 +77,41 @@ export default class Trigger {
                 if (!window.dataLayer) {
                     // window.dataLayer = [];
                     console.warn('Warning: There is no "window.dataLayer", check that GTM is properly installed.');
-                    yield false;
+                    // yield false;
                     return false;
                 }
 
                 _linea = 5.1;
-                const dlProxy = new Proxy(window.dataLayer, { // ESTE PROXY ES TEMPORAL HASTA SABER DÓNDE PONERLO
-                    apply: function (target, thisArg, argumentsList) {
-                        return thisArg[target].apply(this, argumentList);
-                    },
-                    deleteProperty: function (target, property) {
-                        return true;
-                    },
-                    set: function (target, property, value, receiver) {
-                        if (value.event)
-                            if (self._event == value.event)
-                                // yield true; // HAY QUE ENCONTRAR FORMA DE REEMPLAZAR ESTO
-
-                        target[property] = value;
-                        return true;
+                while (true) {
+                    await new Promise(resolve => setTimeout(resolve, 10));
+                    if (dlAnt.length != window.dataLayer.length) {
+                        for (let i = dlAnt.length; i < window.dataLayer.length; i++) {
+                            if (window.dataLayer[i].event !== undefined) {
+                                if (window.dataLayer[i].event === self.event) {
+                                    yield true;
+                                }
+                            }
+                        }
+                        dlAnt = JSON.parse(JSON.stringify(window.dataLayer));
                     }
-                });
+                }
+
+                // const dlProxy = new Proxy(window.dataLayer, { // ESTE PROXY ES TEMPORAL HASTA SABER DÓNDE PONERLO
+                //     apply: function (target, thisArg, argumentsList) {
+                //         return thisArg[target].apply(this, argumentList);
+                //     },
+                //     deleteProperty: function (target, property) {
+                //         return true;
+                //     },
+                //     set: function (target, property, value, receiver) {
+                //         if (value.event)
+                //             if (self._event == value.event)
+                //                 // yield true; // HAY QUE ENCONTRAR FORMA DE REEMPLAZAR ESTO
+
+                //         target[property] = value;
+                //         return true;
+                //     }
+                // });
             }
         } catch(error) {
             console.error(`Línea: ${_linea} | Mensaje: ${error.message}`);
