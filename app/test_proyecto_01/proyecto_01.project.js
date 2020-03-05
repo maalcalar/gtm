@@ -1,10 +1,8 @@
 import Project from "../../core/projects/project_classes";
-import triggerstreamer from "../Triggers/streamer.trigger";
-import triggerstreamer2 from "../Triggers/streamer.trigger";
-import triggerpageview from "../Triggers/page_view.trigger";
-import tag from "../Tags/custom_html.tag";
+import trigger from "../Triggers/custom_event.trigger";
+import tag from "../Tags/custom_html_2.tag";
 
-const project = new Project([[triggerstreamer, triggerstreamer2], [triggerpageview]], tag);
+const project = new Project([[trigger]], tag);
 
 project.run();
 
