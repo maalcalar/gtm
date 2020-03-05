@@ -1,1 +1,22 @@
-"use strict";var _interopRequireDefault=require("@babel/runtime/helpers/interopRequireDefault"),_project_classes=_interopRequireDefault(require("../../core/projects/project_classes")),_streamer=_interopRequireDefault(require("../Triggers/streamer.trigger")),_page_view=_interopRequireDefault(require("../Triggers/page_view.trigger")),_custom_html=_interopRequireDefault(require("../Tags/custom_html.tag")),project=new _project_classes.default([[_streamer.default,_streamer.default],[_page_view.default]],_custom_html.default);project.run();
+import Project from "../../core/projects/project_classes";
+import trigger from "../Triggers/custom_event.trigger";
+import tag from "../Tags/custom_html_2.tag";
+
+const project = new Project([[trigger]], tag);
+
+project.run();
+
+// PRUEBA 2 FUNCIONA BIEN
+// const generador = project.run();
+
+// (async function() {
+//     for await (let value of generador) {
+//         console.log('Iterator value: ', value);
+//     }
+// })();
+
+// PRUEBA 1 FUNCIONA BIEN
+// console.log(generador.next());
+// console.log(generador.next());
+// console.log(generador.next());
+// console.log(generador.next());

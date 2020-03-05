@@ -15,8 +15,8 @@
 ## Bundler - Gulp
 --
 - Desinstalar webpack. 👍
-- Automatizar la entrada de scripts.
-- Automatizar la salida de scripts.
+- Automatizar la entrada de scripts, usar Promise.
+- Automatizar la salida de scripts, usar Promise.
 
 ### Proyectos
 ---
@@ -31,7 +31,7 @@
 ## Trigger
 ---
 - Agregar "Try catch" para evitar caída. 👍
-- Tipo "Custom Event". Encontrar solución para yield. 😪
+- Tipo "Custom Event". Encontrar solución para yield. 👍
 - Transformar propiedad Run en Iterador asíncrono. 😪
 - Quitar los Tags de la declaración. 😪
 - Crear un Proxy para la observación de dataLayer. 😪
