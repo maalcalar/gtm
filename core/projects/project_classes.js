@@ -181,6 +181,7 @@ export default class Project {
                                 elementn2.value = true; // ¿ES NECESARIO EL FALSE?
 
                                 if (self._triggers.resolve()) {
+                                    console.warn('Se ejecuta el TAG');
                                     tag.run();
                                 }
                             }
