@@ -82,20 +82,24 @@ export default class Trigger {
                 }
 
                 _linea = 5.1;
-                let dlAnt = JSON.parse(JSON.stringify(window.dataLayer));
-                while (true) {
-                    await new Promise(resolve => setTimeout(resolve, 10));
-                    if (dlAnt.length != window.dataLayer.length) {
-                        for (let i = dlAnt.length; i < window.dataLayer.length; i++) {
-                            if (window.dataLayer[i].event !== undefined) {
-                                if (window.dataLayer[i].event === self.event) {
-                                    yield true;
-                                }
-                            }
-                        }
-                        dlAnt = JSON.parse(JSON.stringify(window.dataLayer));
-                    }
-                }
+                document.addEventListener(self._event, function() {
+                    yield true;
+                });
+
+                // let dlAnt = JSON.parse(JSON.stringify(window.dataLayer));
+                // while (true) {
+                //     await new Promise(resolve => setTimeout(resolve, 10));
+                //     if (dlAnt.length != window.dataLayer.length) {
+                //         for (let i = dlAnt.length; i < window.dataLayer.length; i++) {
+                //             if (window.dataLayer[i].event !== undefined) {
+                //                 if (window.dataLayer[i].event === self.event) {
+                //                     yield true;
+                //                 }
+                //             }
+                //         }
+                //         dlAnt = JSON.parse(JSON.stringify(window.dataLayer));
+                //     }
+                // }
 
                 // const dlProxy = new Proxy(window.dataLayer, { // ESTE PROXY ES TEMPORAL HASTA SABER DÓNDE PONERLO
                 //     apply: function (target, thisArg, argumentsList) {
