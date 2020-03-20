@@ -31,10 +31,10 @@
 ## Trigger
 ---
 - Agregar "Try catch" para evitar caída. 👍
-- Tipo "Custom Event". Encontrar solución para yield. 😪
-- Transformar propiedad Run en Iterador asíncrono. 😪
-- Quitar los Tags de la declaración. 😪
-- Crear un Proxy para la observación de dataLayer. 😪
+- Tipo "Custom Event". Encontrar solución para yield. 👍
+- Transformar propiedad Run en Iterador asíncrono. 👍
+- Quitar los Tags de la declaración. 👍
+- Crear un Proxy para la observación de dataLayer. Esto se reemplazó por cambiar el propotipo de DataLayer afectando la propiedad Push para emitir eventos. 👍
 
 ## Tag
 ---

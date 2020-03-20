@@ -4,8 +4,6 @@ export default class Trigger {
         this._shooted = 0;
         this._event = '';
         this._config = config;
-
-
     }
 
     // Setters
