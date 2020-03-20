@@ -115,6 +115,33 @@ export default class Project {
         const self = this;
         let _linea = 0;
 
+        // Se define un evento para detectar los cambios en dataLayer
+        const busquedaDL = setInterval(() => {
+            if (window.dataLayer !== undefined) {
+                if (typeof window.dataLayer === 'object') {
+                    if (window.dataLayer.length >= 0) {
+                        clearInterval(busquedaDL);
+
+                        window.dataLayer.push = function() {
+                            for (let i = 0; i < arguments.length; i++) {
+                                const argument = arguments[i];
+
+                                if (argument.event !== undefined) {
+                                    const atmEvent = new CustomEvent(argument.event, {
+                                        detail: {
+                                            element: argument
+                                        }
+                                    });
+                                    document.dispatchEvent(atmEvent);
+                                }
+                            }
+                            Array.prototype.push.apply(this, arguments);
+                        }
+                    }
+                }
+            }
+        }, 10);
+
         if (this._stateOK) {
             _linea = 1;
             try {
@@ -154,6 +181,7 @@ export default class Project {
                                 elementn2.value = true; // ¿ES NECESARIO EL FALSE?
 
                                 if (self._triggers.resolve()) {
+<<<<<<< HEAD
                                     if (!trigger.type === 'page view') {
                                         tag.run();
                                     } else {
@@ -166,6 +194,10 @@ export default class Project {
                                             }, 10);
                                         }
                                     }
+=======
+                                    console.warn('Se ejecuta el TAG');
+                                    tag.run();
+>>>>>>> 0cce84b4a4b3426c8233fc0a07972139ca509a2d
                                 }
                             }
                         })();

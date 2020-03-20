@@ -54,6 +54,8 @@ export default class Tag {
 
     // Work
     run() {
+        //console.log('Tag Run');
+
         const body = document.getElementsByTagName('body')[0];
 
         if(this._type === 'custom html') {

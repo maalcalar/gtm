@@ -4,8 +4,6 @@ export default class Trigger {
         this._shooted = 0;
         this._event = '';
         this._config = config;
-
-
     }
 
     // Setters
@@ -46,6 +44,64 @@ export default class Trigger {
         const self = this;
         let _linea = 0;
 
+        function createChannel () {
+            const messageQueue = []
+            const resolveQueue = []
+
+            function put (msg) {
+                // anyone waiting for a message ?
+                if (resolveQueue.length) {
+                    // deliver the message to the oldest one waiting (First In First Out)
+                    const nextResolve = resolveQueue.shift()
+                    nextResolve(msg)
+                } else {
+                    // no one is waiting ? queue the event
+                    messageQueue.push(msg)
+                }
+            }
+
+            // returns a Promise resolved with the next message
+            function take () {
+                // do we have queued messages ?
+                if (messageQueue.length) {
+                    // deliver the oldest queued message
+                    return Promise.resolve(messageQueue.shift())
+                } else {
+                    // no queued messages ? queue the taker until a message arrives
+                    return new Promise((resolve) => resolveQueue.push(resolve))
+                }
+            }
+
+            return {
+                take,
+                put
+            }
+        }
+
+        function createChangeChannel (puerto, evento) {
+            const channel = createChannel()
+
+            // every change event will call put on the channel
+            // puerto.on(evento, channel.put)
+            puerto.addEventListener(evento, function(e) {
+                channel.put(true)
+            });
+            return channel
+        }
+
+        function* monitorChangeEvents (channel) {console.log('Canal', channel);
+            while (true) {
+                const info = channel.take();
+                yield info;
+
+                // const info = call(channel.take);
+                // yield info;
+
+                // const info = yield call(channel.take) // Blocks until the promise resolves
+                // yield put(databaseActions.replicationChange(info))
+            }
+        }
+
         try {
             _linea = 1;
             if (self._type == 'page view') {
@@ -82,20 +138,31 @@ export default class Trigger {
                 }
 
                 _linea = 5.1;
-                let dlAnt = JSON.parse(JSON.stringify(window.dataLayer));
+                // yield call(monitorChangeEvents, createChangeChannel(document, self._event));
+                const monitor = monitorChangeEvents(createChangeChannel(document, self._event));
+                // yield monitor.next().value;
                 while (true) {
-                    await new Promise(resolve => setTimeout(resolve, 10));
-                    if (dlAnt.length != window.dataLayer.length) {
-                        for (let i = dlAnt.length; i < window.dataLayer.length; i++) {
-                            if (window.dataLayer[i].event !== undefined) {
-                                if (window.dataLayer[i].event === self.event) {
-                                    yield true;
-                                }
-                            }
-                        }
-                        dlAnt = JSON.parse(JSON.stringify(window.dataLayer));
-                    }
+                    yield monitor.next().value;
                 }
+
+                // document.addEventListener(self._event, function() {
+                //     yield true;
+                // });
+
+                // let dlAnt = JSON.parse(JSON.stringify(window.dataLayer));
+                // while (true) {
+                //     await new Promise(resolve => setTimeout(resolve, 10));
+                //     if (dlAnt.length != window.dataLayer.length) {
+                //         for (let i = dlAnt.length; i < window.dataLayer.length; i++) {
+                //             if (window.dataLayer[i].event !== undefined) {
+                //                 if (window.dataLayer[i].event === self.event) {
+                //                     yield true;
+                //                 }
+                //             }
+                //         }
+                //         dlAnt = JSON.parse(JSON.stringify(window.dataLayer));
+                //     }
+                // }
 
                 // const dlProxy = new Proxy(window.dataLayer, { // ESTE PROXY ES TEMPORAL HASTA SABER DÓNDE PONERLO
                 //     apply: function (target, thisArg, argumentsList) {

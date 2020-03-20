@@ -13,7 +13,7 @@
 - Automatizar la entrada de scripts. 👍
 
 ## Bundler - Gulp
---
+---
 - Desinstalar webpack. 👍
 - Automatizar la entrada de scripts, usar Promise.
 - Automatizar la salida de scripts, usar Promise.
@@ -32,9 +32,15 @@
 ---
 - Agregar "Try catch" para evitar caída. 👍
 - Tipo "Custom Event". Encontrar solución para yield. 👍
+<<<<<<< HEAD
 - Transformar propiedad Run en Iterador asíncrono. 😪
 - Quitar los Tags de la declaración. 😪
 - Crear un Proxy para la observación de dataLayer. 😪
+=======
+- Transformar propiedad Run en Iterador asíncrono. 👍
+- Quitar los Tags de la declaración. 👍
+- Crear un Proxy para la observación de dataLayer. Esto se reemplazó por cambiar el propotipo de DataLayer afectando la propiedad Push para emitir eventos. 👍
+>>>>>>> 0cce84b4a4b3426c8233fc0a07972139ca509a2d
 
 ## Tag
 ---
