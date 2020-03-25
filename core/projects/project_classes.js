@@ -181,23 +181,8 @@ export default class Project {
                                 elementn2.value = true; // ¿ES NECESARIO EL FALSE?
 
                                 if (self._triggers.resolve()) {
-<<<<<<< HEAD
-                                    if (!trigger.type === 'page view') {
-                                        tag.run();
-                                    } else {
-                                        if (tag.type === 'custom html') {
-                                            let readyBody = setInterval(() => {
-                                                if (document.body) {
-                                                    clearInterval(readyBody);
-                                                    tag.run();
-                                                }
-                                            }, 10);
-                                        }
-                                    }
-=======
                                     console.warn('Se ejecuta el TAG');
                                     tag.run();
->>>>>>> 0cce84b4a4b3426c8233fc0a07972139ca509a2d
                                 }
                             }
                         })();
