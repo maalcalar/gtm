@@ -42,6 +42,7 @@
 - Deben tener nativamente una función para agregar objetos a dataLayer, de esta manera el dataLayer se podrá consultar como se hace actualmente y también se podrá escuchar los cambios en el dataLayer.
 - Regular Expression para detectar mala escritura en tipo Custom HTML. (Ejemplo: /(<script>)\w+\W+\d+\D+(<\\script>)/gm)
 - Posibilidad para importar archivos HTML.
+- Usar ID en etiquetas script para poder ejecutarlas (Fuente: https://stackoverflow.com/questions/2592092/executing-script-elements-inserted-with-innerhtml).
 
 ## Variables
 ---
