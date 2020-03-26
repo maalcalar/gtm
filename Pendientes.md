@@ -15,10 +15,10 @@
 ## Bundler - Gulp
 ---
 - Desinstalar webpack. 👍
-- Automatizar la entrada de scripts, usar Promise.
-- Automatizar la salida de scripts, usar Promise.
+- Automatizar la entrada de scripts. 👍
+- Automatizar la salida de scripts. 👍
 
-### Proyectos
+## Proyectos
 ---
 - Nueva clase. 👍
 - Incluir Triggers, Tags. Refactorizar. 😪

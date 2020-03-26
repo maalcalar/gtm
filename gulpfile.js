@@ -5,46 +5,18 @@ const uglify = require('gulp-uglify-es').default;
 const webpack = require('webpack-stream');
 const glob = require('glob');
 
+// Variables globales
+let entries = [];
+let tasks = [];
+let ejecutar;
+// Fin variables globales
+
+// Tareas
 function defaultTask(cb) {
-    // place code for your default task here
     cb();
 }
 
-// function js() {
-//     return src('app/test_proyecto_01/*.project.js')
-//         .pipe(babel({
-//             plugins: ['@babel/transform-runtime']
-//         }))
-//         .pipe(rename((path) => path.extname = '.js'))
-//         .pipe(uglify())
-//         .pipe(dest('app/'));
-// }
-
-const promesaTest = new Promise((resolve, reject) => {
-    if (true) {
-        setTimeout(() => {
-            resolve('Bien');
-        }, 1000);
-    } else {
-        setTimeout(() => {
-            reject('Mal');
-        }, 500);
-    }
-});
-
-function test() {
-    promesaTest.then((res) => {
-        console.log(`Valor ${res}`);
-    }, (err) => {
-        console.error(`Valor ${err}`);
-    });
-}
-
-let entries = [];
-let step = 0;
-const triggers = glob.sync('./app/test_proyecto_01/*.project.js');
-
-const jsTask = () => {
+function transpilar() {
     const entry = entries.shift();
 
     const stream = src(entry.path)
@@ -62,142 +34,44 @@ const jsTask = () => {
                 }]],
             plugins: ["@babel/transform-runtime"]
         }))
-        .pipe(webpack({ output: { filename: entry.name }}))
+        .pipe(webpack({ output: { filename: `../dist/${entry.name}` }}))
         .pipe(rename((path) => path.extname = '.js'))
         .pipe(uglify())
         .pipe(dest('app/'));
 
-    if (entries.length >= 2 && step == 2) {
-        console.log(`1) Entries = ${entries.length} - Step = ${step}`);
-        step = 1;
-        jsTaskS();
-    } else if (entries.length == 1 && step == 2) {
-        console.log(`2) Entries = ${entries.length} - Step = ${step}`);
-        jsTask();
-    } else {
-        console.log(`3) Entries = ${entries.length} - Step = ${step}`);
-        step = 2;
-    }
-
     return stream;
 }
 
-const jsTaskS = series(jsTask, jsTask);
+function archivos(cb) {
+    const triggers = glob.sync('./app/test_proyecto_01/*.project.js');
 
-function js() {
     triggers.forEach((ct, it, ob) => {
         const splitted = ct.split('/');
     
         const proyecto = splitted[splitted.length - 1].split('.')[0];
         entries.push({name: proyecto, path: ct});
+
+        tasks.push(transpilar);
     });
 
-    if (entries.length >= 2) {
-        step = 1;
-        jsTaskS();
-    } else if (entries.length == 1) {
-        step = 0;
-        jsTask();
-    }
+    ejecutar = series(...tasks);
 
-    // entries.forEach(entry => {
-    //     (async function(){
-    //         const resultado = await jsTask(entry);
-    //         console.log(entry, resultado);
-    //     })();
-    // });
+    ejecutar();
+
+    cb();
 }
 
-// async function jsTaskTest(entry) {
-//     return Promise.resolve(
-//         `Proyecto ${entry.name}`
-//     );
-// }
-
-// async function jsTask(entry) {
-//     return Promise.resolve(src(entry.path)
+// function js() {
+//     return src('app/test_proyecto_01/*.project.js')
 //         .pipe(babel({
-//             presets: [
-//                 [
-//                     "@babel/env", {
-//                     "targets": {
-//                         "edge": "17",
-//                         "firefox": "60",
-//                         "chrome": "67",
-//                         "safari": "11.1"
-//                     }, 
-//                     "useBuiltIns": "usage"
-//                 }]],
-//             plugins: ["@babel/transform-runtime"]
+//             plugins: ['@babel/transform-runtime']
 //         }))
-//         .pipe(webpack({ output: { filename: entry.name }}))
-//         .pipe(rename((path) => path.extname = '.js'))
-//         .pipe(uglify())
-//         .pipe(dest('app/')));
-// }
-
-// function js1() {
-//     return src('app/Projects/html-chat_listener.project.js')
-//         .pipe(babel({
-//             presets: [
-//                 [
-//                     "@babel/env", {
-//                     "targets": {
-//                         "edge": "17",
-//                         "firefox": "60",
-//                         "chrome": "67",
-//                         "safari": "11.1"
-//                     }, 
-//                     "useBuiltIns": "usage"
-//                 }]],
-//             plugins: ["@babel/transform-runtime"]
-//         }))
-//         .pipe(webpack({ output: { filename: 'html-chat_listener.project.js' }}))
 //         .pipe(rename((path) => path.extname = '.js'))
 //         .pipe(uglify())
 //         .pipe(dest('app/'));
 // }
+// Fin tareas
 
-// function js2() {
-//     return src('app/Projects/html-redirect_movistar_prix.project.js')
-//         .pipe(babel({
-//             presets: [
-//                 [
-//                     "@babel/env", {
-//                         "targets": {
-//                             "edge": "17",
-//                             "firefox": "60",
-//                             "chrome": "67",
-//                             "safari": "11.1"
-//                         },
-//                         "useBuiltIns": "usage"
-//                     }]],
-//             plugins: ["@babel/transform-runtime"]
-//         }))
-//         .pipe(webpack({ output: { filename: 'html-redirect_movistar_prix.project.js' } }))
-//         .pipe(rename((path) => path.extname = '.js'))
-//         .pipe(uglify())
-//         .pipe(dest('app/'));
-// }
-
-let contenedores = [];
-
-function exec() {
-    console.log(contenedores.shift());
-
-    if (contenedores.length) {
-        exec()
-    }
-}
-
-function prueba() {
-    exec();
-}
-
-exports.prueba = prueba;
-// exports.js = series(js1, js2);
-exports.test = test;
-exports.jsTask = jsTask;
-exports.jsTaskS = jsTaskS;
-exports.js = js;
+// Exportación
+exports.js = series(archivos);
 exports.default = defaultTask;
