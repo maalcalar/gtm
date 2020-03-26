@@ -1,4 +1,4 @@
-const { src, dest, series } = require('gulp');
+const { src, dest, series, parallel } = require('gulp');
 var rename = require('gulp-rename');
 const babel = require('gulp-babel');
 const uglify = require('gulp-uglify-es').default;
@@ -40,53 +40,72 @@ function test() {
     });
 }
 
-let entrada;
+let entries = [];
+let step = 0;
+const triggers = glob.sync('./app/test_proyecto_01/*.project.js');
 
-const jsTask = entry => {
-    return new Promise((resolve) => {
-        const stream = src(entry.path)
-            .on('end', () => { resolve(true); })
-            .pipe(babel({
-                presets: [
-                    [
-                        "@babel/env", {
-                        "targets": {
-                            "edge": "17",
-                            "firefox": "60",
-                            "chrome": "67",
-                            "safari": "11.1"
-                        }, 
-                        "useBuiltIns": "usage"
-                    }]],
-                plugins: ["@babel/transform-runtime"]
-            }))
-            .pipe(webpack({ output: { filename: entry.name }}))
-            .pipe(rename((path) => path.extname = '.js'))
-            .pipe(uglify())
-            .pipe(dest('app/'));
-    });
+const jsTask = () => {
+    const entry = entries.shift();
+
+    const stream = src(entry.path)
+        .pipe(babel({
+            presets: [
+                [
+                    "@babel/env", {
+                    "targets": {
+                        "edge": "17",
+                        "firefox": "60",
+                        "chrome": "67",
+                        "safari": "11.1"
+                    }, 
+                    "useBuiltIns": "usage"
+                }]],
+            plugins: ["@babel/transform-runtime"]
+        }))
+        .pipe(webpack({ output: { filename: entry.name }}))
+        .pipe(rename((path) => path.extname = '.js'))
+        .pipe(uglify())
+        .pipe(dest('app/'));
+
+    if (entries.length >= 2 && step == 2) {
+        console.log(`1) Entries = ${entries.length} - Step = ${step}`);
+        step = 1;
+        jsTaskS();
+    } else if (entries.length == 1 && step == 2) {
+        console.log(`2) Entries = ${entries.length} - Step = ${step}`);
+        jsTask();
+    } else {
+        console.log(`3) Entries = ${entries.length} - Step = ${step}`);
+        step = 2;
+    }
+
+    return stream;
 }
 
-let entries = [];
-const triggers = glob.sync('./app/test_proyecto_01/**.project.js');
+const jsTaskS = series(jsTask, jsTask);
 
 function js() {
     triggers.forEach((ct, it, ob) => {
         const splitted = ct.split('/');
     
         const proyecto = splitted[splitted.length - 1].split('.')[0];
-        // entries[proyecto] = ct;
         entries.push({name: proyecto, path: ct});
     });
-    
-    // console.log(entries);
 
-    entries.forEach(entry => {
-        (async function(){
-            const resultado = await jsTask(entry);
-            console.log(entry, resultado);
-        })();
-    });
+    if (entries.length >= 2) {
+        step = 1;
+        jsTaskS();
+    } else if (entries.length == 1) {
+        step = 0;
+        jsTask();
+    }
+
+    // entries.forEach(entry => {
+    //     (async function(){
+    //         const resultado = await jsTask(entry);
+    //         console.log(entry, resultado);
+    //     })();
+    // });
 }
 
 // async function jsTaskTest(entry) {
@@ -161,7 +180,24 @@ function js() {
 //         .pipe(dest('app/'));
 // }
 
+let contenedores = [];
+
+function exec() {
+    console.log(contenedores.shift());
+
+    if (contenedores.length) {
+        exec()
+    }
+}
+
+function prueba() {
+    exec();
+}
+
+exports.prueba = prueba;
 // exports.js = series(js1, js2);
 exports.test = test;
+exports.jsTask = jsTask;
+exports.jsTaskS = jsTaskS;
 exports.js = js;
 exports.default = defaultTask;
