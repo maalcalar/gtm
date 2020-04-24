@@ -18,6 +18,7 @@
 - Desinstalar webpack. 👍
 - Automatizar la entrada de scripts. 👍
 - Automatizar la salida de scripts. 👍
+- Configurar Gulp y Webpack para la nueva estructura.
 
 ## Proyectos
 ---
@@ -66,6 +67,7 @@ https://javascript.info/async-iterators-generators
 ## Orden de tareas
 ---
 1. Redefinir estructura, tomando como ejemplo el repositorio "Intervenciones". 👍
-2. Usar ID en etiquetas script para poder ejecutarlas (Fuente: https://stackoverflow.com/questions/2592092/executing-script-elements-inserted-with-innerhtml).
-3. Incluir Excepciones en Triggers.
-4. Posibilidad para importar archivos HTML.
+2. Configurar Gulp y Webpack para la nueva estructura.
+3. Usar ID en etiquetas script para poder ejecutarlas (Fuente: https://stackoverflow.com/questions/2592092/executing-script-elements-inserted-with-innerhtml). 😪
+4. Incluir Excepciones en Triggers.
+5. Posibilidad para importar archivos HTML.
