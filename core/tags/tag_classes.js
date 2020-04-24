@@ -94,10 +94,13 @@ export default class Tag {
 
                         if (elem) {
                             const elemN = elem.cloneNode(true);
-                            const head = head = document.getElementsByTagName("head")[0] || document.documentElement;
+                            const head = document.getElementsByTagName("head")[0] || document.documentElement;
+                            const body = document.getElementsByTagName('body')[0];
 
+                            elem.remove();
                             head.insertBefore(elemN, head.firstChild);
-                            // head.removeChild(elemN);
+                            head.removeChild(elemN);
+                            body.appendChild(elem);
                         }
                     });
                 } else {
