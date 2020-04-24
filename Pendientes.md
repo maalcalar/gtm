@@ -3,6 +3,7 @@
 - Carpetas en las que sólo habrán Triggers, Tags y Variables. Esto permitiría evitar redundancia de código para su reutilización. 👍
 - Las demás carpetas de proyectos recolectan/importan Triggers, Tags y/o Variables. 👍
 - Los Proyectos deben permitir iteraciones infinitas de parte de los Triggers. 👍
+- Redefinir estructura, tomando como ejemplo el repositorio "Intervenciones". 👍
 
 ## Documentación
 ---
@@ -61,3 +62,10 @@ https://developer.mozilla.org/en-US/docs/Web/API/Streams_API
 https://developer.mozilla.org/en-US/docs/Web/API/Streams_API/Using_readable_streams
 https://github.com/mdn/dom-examples/blob/master/streams/simple-random-stream/index.html
 https://javascript.info/async-iterators-generators
+
+## Orden de tareas
+---
+1. Redefinir estructura, tomando como ejemplo el repositorio "Intervenciones". 👍
+2. Usar ID en etiquetas script para poder ejecutarlas (Fuente: https://stackoverflow.com/questions/2592092/executing-script-elements-inserted-with-innerhtml).
+3. Incluir Excepciones en Triggers.
+4. Posibilidad para importar archivos HTML.
