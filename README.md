@@ -8,9 +8,9 @@ La siguiente estructura será la utilizada en el repositorio.
 ├───dist
 |   └───containers
 |       ├───accenture_PPDZLF5
-|       |       main.min.js
+|       |       atm_gtm_main.min.js
 |       └───empresas_KRFDDMN
-|               main.min.js
+|               atm_gtm_main.min.js
 └───app
     ├───common
     |       project.class.js
@@ -20,16 +20,26 @@ La siguiente estructura será la utilizada en el repositorio.
     └───containers
         ├───accenture_PPDZLF5
         |   |   main.controller.js
-        |   └───proyecto01
-        |           proyecto01.project.js
-        |           tag0101.tag.js
-        |           trigger0101.trigger.js
-        |           variable0101.variable.js
+        |   ├───Tags
+        |   |       tag01.tag.js
+        |   ├───Triggers
+        |   |       trigger01.trigger.js
+        |   ├───Variables
+        |   |       variable01.variable.js
+        |   ├───proyecto01
+        |   |       proyecto01.project.js
+        |   └───proyecto02
+        |           proyecto02.project.js
         └───empresas_KRFDDMN
             |   main.controller.js
-            └───proyecto01
-                    proyecto01.project.js
-                    tag0101.tag.js
-                    trigger0101.trigger.js
-                    variable0101.variable.js
+            ├───Tags
+            |       tag01.tag.js
+            ├───Triggers
+            |       trigger01.trigger.js
+            ├───Variables
+            |       variable01.variable.js
+            ├───proyecto01
+            |       proyecto01.project.js
+            └───proyecto02
+                    proyecto02.project.js
 ```
