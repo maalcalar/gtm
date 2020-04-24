@@ -1,1 +1,7 @@
-"use strict";var _interopRequireDefault=require("@babel/runtime/helpers/interopRequireDefault"),_project_classes=_interopRequireDefault(require("../../core/projects/project_classes")),_Page_view_all_pages=_interopRequireDefault(require("../Triggers/Page_view_all_pages.trigger")),_HTMLChatListener=_interopRequireDefault(require("../Tags/HTML - Chat Listener.tag")),project=new _project_classes.default([[_Page_view_all_pages.default]],_HTMLChatListener.default);project.run();
+import Project from "../../../common/project.class";
+import trigger from "../../Triggers/Page_view_all_pages.trigger";
+import tag from "../../Tags/HTML - Chat Listener.tag";
+
+const project = new Project([[trigger]], tag);
+
+project.run();

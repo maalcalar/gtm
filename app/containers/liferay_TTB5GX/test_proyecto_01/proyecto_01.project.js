@@ -1,6 +1,6 @@
-import Project from "../../core/projects/project_classes";
-import trigger from "../Triggers/custom_event.trigger";
-import tag from "../Tags/custom_html.tag";
+import Project from "../../../common/project.class";
+import trigger from "../../Triggers/custom_event.trigger";
+import tag from "../../Tags/custom_html.tag";
 
 const project = new Project([[trigger]], tag);
 
