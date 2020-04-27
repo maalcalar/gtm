@@ -2,7 +2,7 @@ import Project from "../../../../common/project.class";
 import trigger from "../../../Triggers/custom_event.trigger";
 import tag from "../../../Tags/custom_html.tag";
 
-const project = new Project([[trigger]], tag);
+const project = new Project([[trigger]], undefined, tag);
 
 export default project;
 
