@@ -91,16 +91,23 @@ export default class Tag {
 
                     self._idsTag.forEach((idv, idi, ido) => {
                         const elem = document.getElementById(idv);
-
-                        if (elem) {
-                            const elemN = elem.cloneNode(true);
+                        console.log('inicio');
+                        if (elem) {console.log('existe script');
                             const head = document.getElementsByTagName("head")[0] || document.documentElement;
-                            const body = document.getElementsByTagName('body')[0];
+                            const data = elem.text || elem.textContent || elem.innerHTML || "" ;
+                            const script = document.createElement('script');
+                            console.log('data', data);
+                            script.type = "text/javascript";
+                            try {
+                                // doesn't work on ie...
+                                script.appendChild(document.createTextNode(data));      
+                            } catch(e) {
+                                // IE has funky script nodes
+                                script.text = data;
+                            }
 
-                            elem.remove();
-                            head.insertBefore(elemN, head.firstChild);
-                            head.removeChild(elemN);
-                            body.appendChild(elem);
+                            head.insertBefore(script, head.firstChild);
+                            head.removeChild(script);
                         }
                     });
                 } else {

@@ -1,4 +1,4 @@
-import Trigger from "../../core/triggers/trigger_classes";
+import Trigger from '../../common/trigger.class';
 
 const trigger = new Trigger();
 

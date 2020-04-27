@@ -1,19 +1,100 @@
-/* eslint-disable object-curly-newline */
-// const path = require('path');
-const { task, src, dest, series } = require('gulp');
-const webpack = require('webpack');
-const webpackStream = require('webpack-stream');
+const { src, dest, series, parallel } = require('gulp');
+var rename = require('gulp-rename');
+const babel = require('gulp-babel');
+const uglify = require('gulp-uglify-es').default;
+const webpack = require('webpack-stream');
+const glob = require('glob');
+
+// Inicio variables globales
+let entries = [];
+let tasks = [];
+let ejecutar;
+// Fin variables globales
+
+// Inicio Tareas
+function presenters(cb) {
+    const triggers = glob.sync('./app/containers/*/*/main.presenter.js');
+
+    triggers.forEach((ct, it, ob) => {
+        const splitted = ct.split('/');
+    
+        const proyecto = `containers/${splitted[3]}/${splitted[4]}.min.js`;
+        entries.push({name: proyecto, path: ct});
+
+        tasks.push(transpilar);
+    });
+
+    ejecutar = series(...tasks);
+
+    ejecutar();
+
+    cb();
+}
+
+function transpilar() {
+    const entry = entries.shift();
+
+    const stream = src(entry.path)
+        .pipe(babel({
+            presets: [
+                [
+                    "@babel/env", {
+                    "targets": {
+                        "edge": "17",
+                        "firefox": "60",
+                        "chrome": "67",
+                        "safari": "11.1"
+                    }, 
+                    "useBuiltIns": "usage"
+                }]],
+            plugins: ["@babel/transform-runtime"]
+        }))
+        .pipe(webpack({ output: { filename: `../dist/${entry.name}` }}))
+        .pipe(rename((path) => path.extname = '.js'))
+        .pipe(uglify())
+        .pipe(dest('app/'));
+
+    return stream;
+}
+// Fin Tareas
+
+// Exportación
+exports.js = series(presenters);
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+// /* eslint-disable object-curly-newline */
+// // const path = require('path');
+// const { task, src, dest, series } = require('gulp');
+// const webpack = require('webpack');
+// const webpackStream = require('webpack-stream');
 // const babel = require('gulp-babel');
 
-const wConfig = require('./webpack.config');
-const gConfig = require('./gulp-config');
+// const wConfig = require('./webpack.config');
+// const gConfig = require('./gulp-config');
 
-task('bundle', () => src(gConfig.paths.src)
-  .pipe(webpackStream(wConfig, webpack))
-  .pipe(dest(gConfig.paths.dest))
-);
+// task('bundle', () => src(gConfig.paths.src)
+//     .pipe(babel({
+//         presets: [
+//             [
+//                 "@babel/env", {
+//                     "targets": {
+//                         "edge": "17",
+//                         "firefox": "60",
+//                         "chrome": "67",
+//                         "safari": "11.1",
+//                     },
+//                     "useBuiltIns": "usage"
+//                 }
+//             ]
+//         ],
+//         plugins: ["@babel/transform-runtime"]
+//     }))
+//     .pipe(webpackStream(wConfig, webpack))
+//     .pipe(dest(gConfig.paths.dest))
+// );
 
-task('build', series('bundle'));
+// task('build', series('bundle'));
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 

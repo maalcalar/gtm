@@ -1,5 +1,5 @@
-import Trigger from "../triggers/trigger_classes";
-import Tag from "../tags/tag_classes";
+import Trigger from "./trigger.class";
+import Tag from "./tag.class";
 
 export default class Project {
     constructor(triggers = undefined, tags = undefined) {

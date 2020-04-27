@@ -4,7 +4,7 @@ import tag from "../../../Tags/custom_html.tag";
 
 const project = new Project([[trigger]], tag);
 
-project.run();
+export default project;
 
 // PRUEBA 2 FUNCIONA BIEN
 // const generador = project.run();

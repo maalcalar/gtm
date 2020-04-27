@@ -1,4 +1,4 @@
-import Tag from "../../core/tags/tag_classes";
+import Tag from "../../common/tag.class";
 
 const tag = new Tag('custom html');
 
