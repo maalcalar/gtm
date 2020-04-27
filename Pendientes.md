@@ -18,7 +18,7 @@
 - Desinstalar webpack. 👍
 - Automatizar la entrada de scripts. 👍
 - Automatizar la salida de scripts. 👍
-- Configurar Gulp y Webpack para la nueva estructura.
+- Configurar Gulp y Webpack para la nueva estructura. 😪
 
 ## Proyectos
 ---
@@ -44,7 +44,7 @@
 - Deben tener nativamente una función para agregar objetos a dataLayer, de esta manera el dataLayer se podrá consultar como se hace actualmente y también se podrá escuchar los cambios en el dataLayer.
 - Regular Expression para detectar mala escritura en tipo Custom HTML. (Ejemplo: /(<script[\s\S]*>)([\s\S]*)(<\/script>)/gm)
 - Posibilidad para importar archivos HTML.
-- Usar ID en etiquetas script para poder ejecutarlas (Fuente: https://stackoverflow.com/questions/2592092/executing-script-elements-inserted-with-innerhtml). 😪
+- Usar ID en etiquetas script para poder ejecutarlas (Fuente: https://stackoverflow.com/questions/2592092/executing-script-elements-inserted-with-innerhtml). 👍
 
 ## Variables
 ---
@@ -67,7 +67,7 @@ https://javascript.info/async-iterators-generators
 ## Orden de tareas
 ---
 1. Redefinir estructura, tomando como ejemplo el repositorio "Intervenciones". 👍
-2. Configurar Gulp y Webpack para la nueva estructura. 👍
+2. Configurar Gulp y Webpack para la nueva estructura. 😪
 3. Usar ID en etiquetas script para poder ejecutarlas (Fuente: https://stackoverflow.com/questions/2592092/executing-script-elements-inserted-with-innerhtml). 👍
 4. Incluir Excepciones en Triggers.
 5. Posibilidad para importar archivos HTML.
