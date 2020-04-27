@@ -13,8 +13,7 @@ const {
 module.exports = {
   mode: 'production',
   entry: {
-    ...getControllers(),
-    ...getPresenters()
+    ...getControllers()
   },
 
   output: {
