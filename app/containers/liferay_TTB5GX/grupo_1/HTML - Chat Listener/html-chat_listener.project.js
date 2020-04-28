@@ -4,4 +4,4 @@ import tag from "../../../Tags/HTML - Chat Listener.tag";
 
 const project = new Project([[trigger]], undefined, tag);
 
-project.run();
+export default project;

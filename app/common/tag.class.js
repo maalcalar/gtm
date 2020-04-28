@@ -74,9 +74,9 @@ export default class Tag {
     }
 
     // Work
-    run() {
+    async run() {
         const self = this;
-        const body = document.getElementsByTagName('body')[0];
+        let body = document.getElementsByTagName('body')[0];
 
         if(self._type === 'custom html') {
             const typeHTML = typeof self._html;
@@ -84,6 +84,10 @@ export default class Tag {
             if (typeHTML === 'string') {
                 if(self._html) {
                     if (!self._shooted) {
+                        while (!body) { // ENCONTRAR ALTERNATIVA
+                            await new Promise(resolve => setTimeout(resolve, 50));
+                            body = document.getElementsByTagName('body')[0]
+                        }
                         body.innerHTML = body.innerHTML + self._html;
 
                         self._shooted = true;
@@ -91,12 +95,11 @@ export default class Tag {
 
                     self._idsTag.forEach((idv, idi, ido) => {
                         const elem = document.getElementById(idv);
-                        console.log('inicio');
-                        if (elem) {console.log('existe script');
+                        if (elem) {
                             const head = document.getElementsByTagName("head")[0] || document.documentElement;
                             const data = elem.text || elem.textContent || elem.innerHTML || "" ;
                             const script = document.createElement('script');
-                            console.log('data', data);
+
                             script.type = "text/javascript";
                             try {
                                 // doesn't work on ie...
