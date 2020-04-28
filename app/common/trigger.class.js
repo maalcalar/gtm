@@ -1,9 +1,10 @@
 export default class Trigger {
-    constructor(type = 'page view', config = {}) {
+    constructor(type = 'page view', config = {}, eventos = []) {
         this._type = typeof type === 'string' ? type.toLowerCase() : 'page view';
         this._shooted = 0;
         this._event = '';
         this._config = config;
+        this._eventos = eventos;
     }
 
     // Setters
@@ -37,6 +38,23 @@ export default class Trigger {
 
     get event() {
         return this._event;
+    }
+
+    // Utils
+    eventsEval () {
+        const self = this;
+        let result = self._eventos.length > 0 ? false : true;
+
+        for (let i = 0; i < self._eventos.length; i++) {
+            const element = self._eventos[i];
+            
+            if (element.type == 'url') {
+                const componente = element.component == 'full url' ? window.location.href : element.component == 'protocol' ? window.location.protocol : element.component == 'host name' ? window.location.hostname || window.location.host : element.component == 'port' ? window.location.port : element.component == 'path' ? window.location.pathname : window.location.href;
+                result = result || (element.condition == 'contains' ? componente.includes(element.value) : element.condition == 'equals' ? componente == element.value : element.condition == 'does not contain' ? !componente.includes(element.value) : element.condition == 'does not equal' ? !(componente == element.value) : false );
+            }
+        }
+
+        return result;
     }
 
     // Shot
@@ -106,7 +124,7 @@ export default class Trigger {
             _linea = 1;
             if (self._type == 'page view') {
                 _linea = 2.0;
-                if (document.readyState === 'loading' || document.querySelector('body')) { // Es posible tener que poner un SetInterval
+                if (document.readyState === 'loading' || document.querySelector('body') && self.eventsEval()) { // Es posible tener que poner un SetInterval
                     _linea = 2.1;
                     yield true;
                 }
@@ -115,7 +133,7 @@ export default class Trigger {
                 let domReadyInt = false;
                 while (!domReadyInt) { // ENCONTRAR ALTERNATIVA A WHILE
                     await new Promise(resolve => setTimeout(resolve, 50));
-                    if (document.readyState === 'interactive' || document.readyState === 'complete')
+                    if (document.readyState === 'interactive' || document.readyState === 'complete' && self.eventsEval())
                         domReadyInt = true;
                 }
                 yield true;
@@ -124,7 +142,7 @@ export default class Trigger {
                 let winLoadedInt = false;
                 while (!winLoadedInt) { // ENCONTRAR ALTERNATIVA A WHILE
                     await new Promise(resolve => setTimeout(resolve, 50));
-                    if (document.readyState === 'complete')
+                    if (document.readyState === 'complete' && self.eventsEval())
                         winLoadedInt = true;
                 }
                 yield true;
@@ -141,7 +159,7 @@ export default class Trigger {
                 // yield call(monitorChangeEvents, createChangeChannel(document, self._event));
                 const monitor = monitorChangeEvents(createChangeChannel(document, self._event));
                 // yield monitor.next().value;
-                while (true) {
+                while (true && self.eventsEval()) {
                     yield monitor.next().value;
                 }
 

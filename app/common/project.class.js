@@ -2,14 +2,17 @@ import Trigger from "./trigger.class";
 import Tag from "./tag.class";
 
 export default class Project {
-    constructor(triggers = undefined, tags = undefined) {
+    constructor(triggers = undefined, exceptions = undefined, tags = undefined) {
         self = this;
         this._prevtriggers = triggers;
         this._triggers = [];
+        this._prevexceptions = exceptions;
+        this._exceptions = [];
         this._prevtags = tags;
         this._tags = [];
         // this._variables = variables;
         this._triggersOK = false;
+        this._exceptionsOK = false;
         this._tagsOK = false;
         // this._variablesOK = false;
         this._stateOK = false;
@@ -48,7 +51,85 @@ export default class Project {
                 }
             }
         }
+
+        for (let indexn1 = 0; indexn1 < self._triggers.length; indexn1++) {
+            self._triggers[indexn1].resolve = function() {
+                let result = true;
+
+                this.forEach(element => {
+                    result = result && element.value;
+                });
+
+                return result;
+            }
+        }
+
+        self._triggers.resolve = function() {
+            let result = false;
+
+            this.forEach(element => {
+                result = result || element.resolve();
+            });
+
+            return result;
+        }
         // console.log('Triggers', this._triggers);
+        // Revisión y formato de excepciones
+        if (self.testTrigger(self._prevexceptions) === 'none') {
+            console.warn('Warning: The "triggers" param is not a valid object.');
+        } else if (self.testTrigger(self._prevexceptions) === 'trigger') {
+            self._exceptions[0] = [{trigger: self._prevexceptions, value: false}];
+            this._exceptionsOK = true;
+        } else {
+            for (let indexn1 = 0; indexn1 < self._prevexceptions.length; indexn1++) {
+                const elementn1 = self._prevexceptions[indexn1];
+
+                if (self.testTrigger(elementn1) === 'none') {
+
+                } else if (self.testTrigger(elementn1) === 'trigger') {
+                    if (!self._exceptions[0]) {
+                        self._exceptions[0] = [];
+                    }
+                    self._exceptions[0][indexn1] = {trigger: elementn1, value: false};
+                    this._exceptionsOK = true;
+                } else {
+                    if (!self._exceptions[indexn1]) {
+                        self._exceptions[indexn1] = [];
+                    }
+                    for (let indexn2 = 0; indexn2 < elementn1.length; indexn2++) {
+                        const elementn2 = self._prevexceptions[indexn1][indexn2];
+                        
+                        if (self.testTrigger(elementn2) === 'trigger') {
+                            self._exceptions[indexn1][indexn2] = {trigger: elementn2, value: false};
+                            // self._exceptions[indexn1].push(elementn2);
+                            this._exceptionsOK = true;
+                        }
+                    }
+                }
+            }
+        }
+
+        for (let indexn1 = 0; indexn1 < self._exceptions.length; indexn1++) {
+            self._exceptions[indexn1].resolve = function() {
+                let result = true;
+
+                this.forEach(element => {
+                    result = result && element.value;
+                });
+
+                return result;
+            }
+        }
+
+        self._exceptions.resolve = function() {
+            let result = false;
+
+            this.forEach(element => {
+                result = result || element.resolve();
+            });
+
+            return result;
+        }
         // Revisión y formato de tags
         if (this._prevtags != undefined) {
             if (typeof this._prevtags === 'object') {
@@ -142,32 +223,11 @@ export default class Project {
             }
         }, 10);
 
+        // Inicio del proyecto
         if (this._stateOK) {
             _linea = 1;
             try {
-                let tag = this._tags[0][0];
-
-                for (let indexn1 = 0; indexn1 < self._triggers.length; indexn1++) {
-                    self._triggers[indexn1].resolve = function() {
-                        let result = true;
-
-                        this.forEach(element => {
-                            result = result && element.value;
-                        });
-
-                        return result;
-                    }
-                }
-
-                self._triggers.resolve = function() {
-                    let result = false;
-
-                        this.forEach(element => {
-                            result = result || element.resolve();
-                        });
-
-                        return result;
-                }
+                let tag = this._tags[0][0]; // Falta poner más etiquetas
 
                 for (let indexn1 = 0; indexn1 < self._triggers.length; indexn1++) {
                     const elementn1 = self._triggers[indexn1];
