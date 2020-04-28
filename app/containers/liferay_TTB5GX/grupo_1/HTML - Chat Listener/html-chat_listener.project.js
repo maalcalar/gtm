@@ -1,5 +1,5 @@
 import Project from "../../../../common/project.class";
-import trigger from "../../../Triggers/Page_view_all_pages.trigger";
+import trigger from "../../../Triggers/Redirect Movistar Prix.trigger";
 import tag from "../../../Tags/HTML - Chat Listener.tag";
 
 const project = new Project([[trigger]], tag);
